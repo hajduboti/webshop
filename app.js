@@ -36,6 +36,6 @@ app.use((error, req, res, next)=>{
   });
 });
 
-app.listen(80,'localhost', function () {
+app.listen(8001,'localhost', function () {
   console.log("server is running");
 });
