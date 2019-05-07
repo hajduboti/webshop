@@ -9,7 +9,19 @@ router.get('/products/', (req, res, next) => {
   res.render('products');
 });
 
-router.get('/products/:id', (req, res, next) => {
+router.get('/products/:category/:subCategory', (req, res, next) => {
+  console.log(req.params.category)
+  console.log(req.params.subCategory)
+  res.render('products');
+});
+
+router.get('/products/:category', (req, res, next) => {
+  console.log(req.params.category)
+  res.render('products');
+});
+
+
+router.get('/product/:id', (req, res, next) => {
   console.log(req.params.id);
   res.render('product-detail');
 });
