@@ -14,15 +14,17 @@ router.get('/products/:id', (req, res, next) => {
   res.render('product-detail');
 });
 
-router.get('/cart/', (req, res, next) => {
+router.get('/user/cart/', (req, res, next) => {
   res.render('cart');
 });
 
+router.get('/user/orders/', (req, res, next) => {
+  res.render('cart');
+});
 
 router.get('/admin/orders', (req, res, next) => {
   res.render('orders');
 });
-
 
 
 module.exports = router;
