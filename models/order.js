@@ -1,6 +1,7 @@
 var Sequelize = require("sequelize");
 const sequelize = require('../mssql');
-
+const OrderItems = require('../models/orderitems.js')
+const Users = require('../models/user')
 
 const Orders = sequelize.define('orders', {
     OrderID:{
@@ -29,3 +30,6 @@ const Orders = sequelize.define('orders', {
     sequelize,
     modelName: 'orders'
 });
+
+// Orders.hasMany(OrderItems)
+// Orders.hasOne(Users)

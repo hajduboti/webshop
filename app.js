@@ -6,7 +6,7 @@ const Sequelize = require('sequelize');
 const sequelize = require('./mssql');
 
 const Users = require('./models/user');
-const Image = require('./models/image');
+const Images = require('./models/image');
 const Orders = require('./models/order');
 const OrderItems = require('./models/orderitems');
 const Products = require('./models/products');
@@ -51,20 +51,21 @@ app.listen(8001,'localhost', function () {
 });
 
 
-// Products.hasMany(Images)
-// Products.hasMany(Reviews)
-
-// Orders.hasMany(OrderItems)
-
-// Orders.hasOne(Users)
-
-// sequelize.query('use WebShop').then(function(rows) {
-//   return JSON.stringify(rows);
-// });
+DB_NAME = 'WebShop'   //The Database Name to be used
 
 
 
-// return sequelize.query("CREATE DATABASE WebShop").then(data => {
+
+sequelize.query('use ' + DB_NAME).then(function(rows) {
+  console.log(rows);
+})
+.catch(function(){
+  console.log('Error -- Database ' + DB_NAME + ' doesnt exist')
+});
+
+
+
+// return sequelize.query("CREATE DATABASE " + DB_NAME).then(data => {
 //     return User;
 // });
 
@@ -73,10 +74,7 @@ app.listen(8001,'localhost', function () {
 //   console.log("Billys's auto-generated ID:", Billy.UserID);
 // });
 
-// User.findAll().then(Users => {
-//   console.log("All users:", JSON.stringify(Users, null, 4));
-// });
 
-sequelize.query('Select * from Users', { type: Sequelize.QueryTypes.SELECT }).then(function(rows) {
-  console.log(rows);
-});
+// sequelize.query('Select * from Users', { type: Sequelize.QueryTypes.SELECT }).then(function(rows) {
+//   console.log(rows);
+// });

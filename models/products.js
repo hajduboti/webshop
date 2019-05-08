@@ -1,6 +1,7 @@
 var Sequelize = require("sequelize");
 const sequelize = require('../mssql');
-
+const Images = require('../models/image')
+const Reviews = require('../models/reviews')
 
 const Products = sequelize.define('products', {
     ProductID:{
@@ -39,3 +40,6 @@ const Products = sequelize.define('products', {
     sequelize,
     modelName: 'products'
 });
+
+// Products.hasMany(Images)
+// Products.hasMany(reviews)
