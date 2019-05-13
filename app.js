@@ -47,6 +47,14 @@ app.use((error, req, res, next)=>{
 /// Relations ///
 Reviews.belongsTo( Product, {constrains: true});
 Product.hasMany(Reviews);
+Orders.belongsTo( Users, {constrains: true});
+Users.hasMany(Orders);
+OrderItems.belongsTo(Orders, {constrains: true});
+Orders.hasMany(OrderItems);
+Images.belongsTo(Product, {constrains: true});
+Product.hasMany(Images);
+
+
 //// connect,synch to database run WebServer ////
 
 sequelize
