@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/products');
+var Sequelize = require("sequelize");
+const Images = require('../models/image');
 
 router.get('/', (req, res, next) => {
   res.redirect('/products');
@@ -17,18 +19,22 @@ router.get('/products/:category/:subCategory', (req, res, next) => {
   PRODUCT_CATEGORY = req.params.category
   PRODUCT_NAME = req.params.subCategory
 
-const products = [
-  Product.findAll({
-    attributes: ['ProductID', 'ProductName','Price' ],
 
+  Product.findAll({
+    attributes: ['ProductID', 'ProductName','Price'],
+    include: [
+      'images'
+    ],
     where: {
-      category: PRODUCT_CATEGORY,
-      ProductName: PRODUCT_NAME
+      ProductID : 2,
+      // category: PRODUCT_CATEGORY,
+      // ProductName: PRODUCT_NAME
     }
   }).then(result =>{
-    console.log(result)
-  })
-]
+    res.render('products', {"products": result } );
+    // res.send(result);
+  });
+
 
 
   // const products = [{
@@ -43,7 +49,7 @@ const products = [
   //   Price : 100.00,
   //   Images: ["/assets/images/gallery/chair.jpg"]
   // }]
-  res.render('products', {"products": products } );
+  
 });
 
 router.get('/products/:category', (req, res, next) => {

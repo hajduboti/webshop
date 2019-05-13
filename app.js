@@ -48,7 +48,7 @@ app.use((error, req, res, next)=>{
 Product.hasMany(Reviews,{ foreignKey:"ProductID"});
 Reviews.belongsTo( Product, { foreignKey:"ProductID", constrains: true, onDelete: 'CASCADE' });
 
-Product.hasMany(Images, { foreignKey:"ProductID" });
+Product.hasMany(Images, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
 Images.belongsTo( Product, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
 
 Orders.belongsTo( Users, {constrains: true});
@@ -60,9 +60,9 @@ Orders.hasMany(OrderItems);
 //// connect,synch to database run WebServer ////
 
 sequelize
-  .sync({ force: true })
+  .sync({ force: false })
   .then(result => {
-    console.log(result);
+    // console.log(result);
     // for(i=0; i<300; i++){
     //   Product.create(    
     //       {ProductID: i, 
