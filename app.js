@@ -45,10 +45,11 @@ app.use((error, req, res, next)=>{
   });
 });
 /// Relations ///
-Reviews.belongsTo( Product, { constrains: true, onDelete: 'CASCADE' });
-Product.hasMany(Reviews);
-Images.belongsTo( Product, {constrains: true, onDelete: 'CASCADE'});
-Product.hasMany(Images);
+Product.hasMany(Reviews,{ foreignKey:"ProductID"});
+Reviews.belongsTo( Product, { foreignKey:"ProductID", constrains: true, onDelete: 'CASCADE' });
+
+Product.hasMany(Images, { foreignKey:"ProductID" });
+Images.belongsTo( Product, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
 
 Orders.belongsTo( Users, {constrains: true});
 Users.hasMany(Orders);
@@ -59,7 +60,7 @@ Orders.hasMany(OrderItems);
 //// connect,synch to database run WebServer ////
 
 sequelize
-  .sync({ force: false })
+  .sync({ force: true })
   .then(result => {
     // console.log(result);
     // for(i=0; i<300; i++){
