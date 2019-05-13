@@ -31,5 +31,5 @@ const Orders = sequelize.define('orders', {
     modelName: 'orders'
 });
 
-// Orders.hasMany(OrderItems)
-// Orders.hasOne(Users)
+module.exports = Orders;
+

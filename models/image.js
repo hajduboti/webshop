@@ -21,3 +21,5 @@ const Image = sequelize.define('image', {
     Sequelize,
     modelName: 'image'
 });
+
+module.exports = Image;
