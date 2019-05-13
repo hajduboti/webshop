@@ -61,7 +61,7 @@ Orders.hasMany(OrderItems, {foreignKey:"OrderID"});
 sequelize
   .sync({ force: true })
   .then(result => {
-    // console.log(result);
+    console.log(result);
     // for(i=0; i<300; i++){
     //   Product.create(    
     //       {ProductID: i, 
