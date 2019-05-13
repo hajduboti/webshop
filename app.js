@@ -62,17 +62,12 @@ app.listen(8001,'localhost', function () {
 
 
 //Connect to the DB_NAME 
-function connectToDB(){
-  sequelize.query('use ' + DB_NAME).then(function(rows) {
-    console.log("DB Connection to: " + DB_NAME + " Success")
-    console.log(rows);
-  })
-  .catch(function(){
-    console.log('Error -- Database ' + DB_NAME + ' doesnt exist')
-  });
-}
-
-connectToDB();
+sequelize.query('use ' + DB_NAME).then(function(rows) {
+  console.log("DB Connection to: " + DB_NAME + " Success")
+})
+.catch(function(){
+  console.log('Error -- Database ' + DB_NAME + ' doesnt exist')
+});
 
 
 

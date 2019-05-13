@@ -1,7 +1,6 @@
 var Sequelize = require("sequelize");
 const sequelize = require('../mssql');
 
-
 const Users = sequelize.define('users', {
     
     UserID:{
