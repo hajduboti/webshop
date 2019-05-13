@@ -6,10 +6,6 @@ const Image = sequelize.define('image', {
         type: Sequelize.INTEGER,
         primaryKey: true
     },
-    ProductID:{
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
     Url:{
         type: Sequelize.STRING,
         allowNull: false

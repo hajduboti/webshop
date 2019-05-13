@@ -9,10 +9,6 @@ const Orders = sequelize.define('orders', {
         primaryKey: true
     },
 
-    UserID:{
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
 
     PaymentID:{
         type: Sequelize.INTEGER,

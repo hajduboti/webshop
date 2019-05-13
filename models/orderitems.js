@@ -7,10 +7,6 @@ const OrderItems = sequelize.define('orderItems', {
         type: Sequelize.INTEGER,
         primaryKey: true
     },
-    OrderID:{
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
     ProductName:{
         type: Sequelize.STRING,
         allowNull: false
