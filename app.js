@@ -45,8 +45,9 @@ app.use((error, req, res, next)=>{
   });
 });
 /// Relations ///
-Reviews.belongsTo( Product, {constrains: true});
+Reviews.belongsTo( Product, {constrains: true, onDelete: 'CASCADE'});
 Product.hasMany(Reviews);
+<<<<<<< HEAD
 Orders.belongsTo( Users, {constrains: true});
 Users.hasMany(Orders);
 OrderItems.belongsTo(Orders, {constrains: true});
@@ -55,6 +56,10 @@ Images.belongsTo(Product, {constrains: true});
 Product.hasMany(Images);
 
 
+=======
+Images.belongsTo( Product, {constrains: true, onDelete: 'CASCADE'});
+Product.hasMany(Images);
+>>>>>>> db0a9dd8ad3ec2fceb9435331b75388392635a9d
 //// connect,synch to database run WebServer ////
 
 sequelize
@@ -68,9 +73,6 @@ sequelize
   .catch(err => {
     console.log(err);
   });
-
-
-
 
 // Users.create({UserID:1, FirstName: "BillyBobby", LastName: "Boy", Email: 'BillyBobbyBoy@com.com', Password:'root', City:'Copenhagen', Postcode:2400, Address:'WestPlace', UserType:'Customer' }).then(Billy => {
 //   console.log("Billys's auto-generated ID:", Billy.UserID);

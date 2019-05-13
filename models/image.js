@@ -1,7 +1,6 @@
 var Sequelize = require("sequelize");
 const sequelize = require('../mssql');
 
-
 const Image = sequelize.define('image', {
     ImageID:{
         type: Sequelize.INTEGER,
