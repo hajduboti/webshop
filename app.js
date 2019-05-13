@@ -65,20 +65,26 @@ app.listen(8001,'localhost', function () {
 function connectToDB(){
   sequelize.query('use ' + DB_NAME).then(function(rows) {
     console.log("DB Connection to: " + DB_NAME + " Success")
-    console.log(rows);
+    // console.log(rows);
   })
   .catch(function(){
     console.log('Error -- Database ' + DB_NAME + ' doesnt exist')
+      return sequelize.query("CREATE DATABASE " + DB_NAME).then(data => {
+        return DB_NAME;
+    });
   });
 }
 
 connectToDB();
+Users.sync();
+Orders.sync();
+OrderItems.sync();
+Products.sync();
+reviews.sync();
 
 
 
-// return sequelize.query("CREATE DATABASE " + DB_NAME).then(data => {
-//     return User;
-// });
+
 
 
 // Users.create({UserID:1, FirstName: "BillyBobby", LastName: "Boy", Email: 'BillyBobbyBoy@com.com', Password:'root', City:'Copenhagen', Postcode:2400, Address:'WestPlace', UserType:'Customer' }).then(Billy => {

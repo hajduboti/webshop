@@ -33,3 +33,5 @@ const OrderItems = sequelize.define('orderItems', {
     sequelize,
     modelName: 'orderItems'
 });
+
+module.exports = OrderItems;

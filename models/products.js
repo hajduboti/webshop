@@ -41,3 +41,6 @@ const Products = sequelize.define('products', {
     modelName: 'products'
 });
 
+module.exports = Products;
+
+

@@ -29,3 +29,4 @@ const Reviews = sequelize.define('reviews', {
     sequelize,
     modelName: 'reviews'
 });
+module.exports = Reviews;
