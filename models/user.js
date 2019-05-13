@@ -4,8 +4,10 @@ const sequelize = require('../mssql');
 const Users = sequelize.define('users', {
     
     UserID:{
-        type: Sequelize.INTEGER,
-        primaryKey: true
+      type: Sequelize.INTEGER,
+      autoIncrement: true,
+      allowNull: false,
+      primaryKey: true
     },
     FirstName:{
         type: Sequelize.STRING,

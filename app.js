@@ -45,21 +45,34 @@ app.use((error, req, res, next)=>{
   });
 });
 /// Relations ///
-Reviews.belongsTo( Product, {constrains: true, onDelete: 'CASCADE'});
+Reviews.belongsTo( Product, { constrains: true, onDelete: 'CASCADE' });
 Product.hasMany(Reviews);
+Images.belongsTo( Product, {constrains: true, onDelete: 'CASCADE'});
+Product.hasMany(Images);
+
 Orders.belongsTo( Users, {constrains: true});
 Users.hasMany(Orders);
 OrderItems.belongsTo(Orders, {constrains: true});
 Orders.hasMany(OrderItems);
 
-Images.belongsTo( Product, {constrains: true, onDelete: 'CASCADE'});
-Product.hasMany(Images);
+
 //// connect,synch to database run WebServer ////
 
 sequelize
-  .sync({ force: true })
+  .sync({ force: false })
   .then(result => {
     // console.log(result);
+    // for(i=0; i<300; i++){
+    //   Product.create(    
+    //       {ProductID: i, 
+    //       ProductName: "Leggings", 
+    //       Description: "Elastic close-fitting garments worn over the legs ", 
+    //       Quantity: '300', 
+    //       Price:'50.00', 
+    //       SoldQuantity:'0', 
+    //       Category:'Pants', 
+    //       Weight:'.25'})
+    // }
     app.listen(8001,'localhost', function () {
       console.log("server is running");
     });
@@ -68,6 +81,7 @@ sequelize
     console.log(err);
   });
 
+  
 // Users.create({UserID:1, FirstName: "BillyBobby", LastName: "Boy", Email: 'BillyBobbyBoy@com.com', Password:'root', City:'Copenhagen', Postcode:2400, Address:'WestPlace', UserType:'Customer' }).then(Billy => {
 //   console.log("Billys's auto-generated ID:", Billy.UserID);
 // });
