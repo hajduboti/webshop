@@ -2,15 +2,14 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const path = require('path');
 const allRoutes = require('./routes/all-routes');
-const Sequelize = require('sequelize');
 const sequelize = require('./mssql');
 
 const Users = require('./models/user');
 const Images = require('./models/image');
 const Orders = require('./models/order');
 const OrderItems = require('./models/orderitems');
-const Products = require('./models/products');
-const reviews = require('./models/reviews');
+const Product = require('./models/products');
+const Reviews = require('./models/reviews');
 
 const app = express();
 app.use('/dist',express.static(path.join(__dirname, 'dist'), { maxAge: '30 days' }));
@@ -20,12 +19,6 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-
-
-
-DB_NAME = 'WebShop'   //The Database Name to be used
-
-
 
 ///===============================
 ////     SERVER ROUTES
@@ -51,38 +44,22 @@ app.use((error, req, res, next)=>{
     }
   });
 });
+/// Relations ///
+Reviews.belongsTo( Product, {constrains: true});
+Product.hasMany(Reviews);
+//// connect,synch to database run WebServer ////
 
-  
-//// ////
-app.listen(8001,'localhost', function () {
-  console.log("server is running");
-});
-
-
-
-
-//Connect to the DB_NAME 
-function connectToDB(){
-  sequelize.query('use ' + DB_NAME).then(function(rows) {
-    console.log("DB Connection to: " + DB_NAME + " Success")
-    // console.log(rows);
-  })
-  .catch(function(){
-    console.log('Error -- Database ' + DB_NAME + ' doesnt exist')
-      return sequelize.query("CREATE DATABASE " + DB_NAME).then(data => {
-        return DB_NAME;
+sequelize
+  .sync({ force: true })
+  .then(result => {
+    // console.log(result);
+    app.listen(8001,'localhost', function () {
+      console.log("server is running");
     });
+  })
+  .catch(err => {
+    console.log(err);
   });
-}
-
-connectToDB();
-Users.sync();
-Orders.sync();
-OrderItems.sync();
-Products.sync();
-reviews.sync();
-
-
 
 
 

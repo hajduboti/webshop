@@ -1,17 +1,11 @@
 var Sequelize = require("sequelize");
 const sequelize = require('../mssql');
-
+const Product = require('./products');
 
 const Reviews = sequelize.define('reviews', {
-    ReveiwID:{
+    ReviewID:{
     type: Sequelize.INTEGER,
     primaryKey: true
-    },
-    ProductID:{
-        type: Sequelize.INTEGER,
-        references: 'products',
-        referencesKey: 'productid',
-        allowNull: false
     },
     CustomerName:{
         type: Sequelize.STRING,
@@ -25,8 +19,6 @@ const Reviews = sequelize.define('reviews', {
         type: Sequelize.STRING,
         allowNull: false
     }
-},{
-    sequelize,
-    modelName: 'reviews'
 });
+
 module.exports = Reviews;
