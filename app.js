@@ -20,21 +20,29 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+
+
+
+DB_NAME = 'WebShop'   //The Database Name to be used
+
+
+
 ///===============================
 ////     SERVER ROUTES
 ///===============================
 app.use('/',allRoutes);
 
 ////////////////////////////////////////////////
-//// Error handling
+            //// Error handling////
 ////////////////////////////////////////////////
-//// 404 route handling
+
+//////////////// 404 route handling////////////////
 app.use((req,res,next)=>{
   const error = new Error('Route not found');
   error.status = 404;
   next(error);
 });
-//// error handling////
+//////////////// 500 error handling////////////////
 app.use((error, req, res, next)=>{
   res.status(error.status || 500);
   res.json({
@@ -51,17 +59,20 @@ app.listen(8001,'localhost', function () {
 });
 
 
-DB_NAME = 'WebShop'   //The Database Name to be used
 
 
+//Connect to the DB_NAME 
+function connectToDB(){
+  sequelize.query('use ' + DB_NAME).then(function(rows) {
+    console.log("DB Connection to: " + DB_NAME + " Success")
+    console.log(rows);
+  })
+  .catch(function(){
+    console.log('Error -- Database ' + DB_NAME + ' doesnt exist')
+  });
+}
 
-
-sequelize.query('use ' + DB_NAME).then(function(rows) {
-  console.log(rows);
-})
-.catch(function(){
-  console.log('Error -- Database ' + DB_NAME + ' doesnt exist')
-});
+connectToDB();
 
 
 

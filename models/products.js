@@ -41,5 +41,3 @@ const Products = sequelize.define('products', {
     modelName: 'products'
 });
 
-// Products.hasMany(Images)
-// Products.hasMany(reviews)
