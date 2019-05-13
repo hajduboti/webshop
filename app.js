@@ -51,10 +51,9 @@ Reviews.belongsTo( Product, { foreignKey:"ProductID", constrains: true, onDelete
 Product.hasMany(Images, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
 Images.belongsTo( Product, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
 
-Orders.belongsTo( Users, {constrains: true});
-Users.hasMany(Orders);
-OrderItems.belongsTo(Orders, {constrains: true});
-Orders.hasMany(OrderItems);
+Users.hasMany(Orders, {foreignKey:"UserID"});
+OrderItems.belongsTo(Product, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
+Orders.hasMany(OrderItems, {foreignKey:"OrderID"});
 
 
 //// connect,synch to database run WebServer ////
