@@ -24,12 +24,12 @@ router.get('/products/:category/:subCategory', (req, res, next) => {
     attributes: ['ProductID', 'ProductName','Price'],
     include: [
       'images'
-    ],
-    where: {
-      ProductID : 2,
-      // category: PRODUCT_CATEGORY,
-      // ProductName: PRODUCT_NAME
-    }
+    ]
+    // where: {
+    //   ProductID : 2,
+    //   // category: PRODUCT_CATEGORY,
+    //   // ProductName: PRODUCT_NAME
+    // }
   }).then(result =>{
     res.render('products', {"products": result } );
     // res.send(result);
