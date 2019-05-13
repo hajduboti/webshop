@@ -45,8 +45,10 @@ app.use((error, req, res, next)=>{
   });
 });
 /// Relations ///
-Reviews.belongsTo( Product, {constrains: true});
+Reviews.belongsTo( Product, {constrains: true, onDelete: 'CASCADE'});
 Product.hasMany(Reviews);
+Images.belongsTo( Product, {constrains: true, onDelete: 'CASCADE'});
+Product.hasMany(Images);
 //// connect,synch to database run WebServer ////
 
 sequelize
@@ -60,9 +62,6 @@ sequelize
   .catch(err => {
     console.log(err);
   });
-
-
-
 
 // Users.create({UserID:1, FirstName: "BillyBobby", LastName: "Boy", Email: 'BillyBobbyBoy@com.com', Password:'root', City:'Copenhagen', Postcode:2400, Address:'WestPlace', UserType:'Customer' }).then(Billy => {
 //   console.log("Billys's auto-generated ID:", Billy.UserID);

@@ -1,25 +1,15 @@
-// var Sequelize = require("sequelize");
-// const sequelize = require('../mssql');
+var Sequelize = require("sequelize");
+const sequelize = require('../mssql');
 
+const Image = sequelize.define('image', {
+    ImageID:{
+        type: Sequelize.INTEGER,
+        primaryKey: true
+    },
+    Url:{
+        type: Sequelize.STRING,
+        allowNull: false
+    }
+});
 
-// const Image = sequelize.define('image', {
-//     ImageID:{
-//         type: Sequelize.INTEGER,
-//         primaryKey: true
-//     },
-//     ProductID:{
-//         type: Sequelize.INTEGER,
-//         references: 'products',
-//         referencesKey: 'productid',
-//         allowNull: false
-//     },
-//     Url:{
-//         type: Sequelize.STRING,
-//         allowNull: false
-//     }
-// },{
-//     Sequelize,
-//     modelName: 'image'
-// });
-
-// module.exports = Image;
+module.exports = Image;
