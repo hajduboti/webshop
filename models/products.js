@@ -3,8 +3,10 @@ const sequelize = require('../mssql');
 
 const Products = sequelize.define('products', {
     ProductID:{
-    type: Sequelize.INTEGER,
-    primaryKey: true
+      type: Sequelize.INTEGER,
+      autoIncrement: true,
+      allowNull: false,
+      primaryKey: true
     },
     ProductName:{
         type: Sequelize.STRING,

@@ -45,9 +45,9 @@ app.use((error, req, res, next)=>{
   });
 });
 /// Relations ///
-Reviews.belongsTo( Product, {constrains: true, onDelete: 'CASCADE'});
+Reviews.belongsTo( Product, { constrains: true, onDelete: 'CASCADE' });
 Product.hasMany(Reviews);
-Images.belongsTo( Product, {constrains: true, onDelete: 'CASCADE'});
+Images.belongsTo( Product, { constrains: true, onDelete: 'CASCADE' });
 Product.hasMany(Images);
 //// connect,synch to database run WebServer ////
 
