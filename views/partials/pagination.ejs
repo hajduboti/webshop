@@ -1,0 +1,29 @@
+<% if(lastPage > 1) {%>
+  <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+    <div class="btn-group m-auto pt-3" role="group" aria-label="First group">
+      <% if (currentPage != 1)  { %>
+        <a class="btn btn-secondary" href="?<%= 'page=' + previousPage %>">Previous</a>
+      <% } %>
+      <% if (currentPage != 1 && previousPage != 0) { %>
+        <a class="btn btn-secondary" href="?page=1">1</a> 
+      <% } %>
+      <% for(i = 4; i >= 0 ; i--) { %>
+      <% if (previousPage - i > 1 ) { %>
+        <a class="btn btn-secondary" href="?<%=  'page=' + (previousPage-i) %>"><%= previousPage - i %></a> 
+      <% } %>
+      <% } %>                                                      
+      <a style="opacity:1" class="btn btn-info disabled" href="?<%= 'page=' + currentPage %>"><%= currentPage %></a>
+      <% for(i = 0; i < 5 ; i++) { %>
+        <% if (nextPage + i < lastPage ) { %>
+          <a class="btn btn-secondary" href="?<%= 'page=' + (nextPage + i) %>"><%= nextPage + i %></a> 
+        <% } %>
+      <% } %>
+      <% if (lastPage != currentPage && nextPage <= lastPage) { %>
+          <a class="btn btn-secondary" href="?<%= 'page=' + lastPage %>"><%= lastPage %></a>
+      <% } %>
+      <% if (lastPage != currentPage && nextPage <= lastPage) { %>
+        <a class="btn btn-secondary" href="?<%= 'page=' + nextPage %>">Next</a>
+      <% } %>
+    </div>
+  </div> 
+<% } %>

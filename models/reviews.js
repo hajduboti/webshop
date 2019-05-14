@@ -15,7 +15,10 @@ const Reviews = sequelize.define('reviews', {
   },
   Score: {
     type: Sequelize.DOUBLE,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      len: [1,5]
+    }
   },
   ReviewText: {
     type: Sequelize.STRING,

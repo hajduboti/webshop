@@ -9,58 +9,123 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/products/', (req, res, next) => {
-  res.render('products');
+  let pageIndex = 1;
+  const itemsPerPage = 20;
+  if (req.query.page) pageIndex = parseInt(req.query.page);
+
+  Product.count().then(result => {
+    totalItems = result;
+    return Product.findAll({
+      attributes: ['ProductID', 'ProductName','Price'],
+      include: [
+        'images'
+      ],
+      offset: (pageIndex - 1) * itemsPerPage,
+      limit: itemsPerPage
+    })
+  }).then(result =>{
+    res.render('products',{
+      products : result,
+      currentPage: pageIndex,
+      hasNextPage: itemsPerPage * pageIndex < totalItems,
+      hasPreviousPage: pageIndex > 1,
+      nextPage: pageIndex + 1,
+      previousPage: pageIndex - 1,
+      lastPage: Math.ceil(totalItems / itemsPerPage) 
+    });
+  });
 });
 
 router.get('/products/:category/:subCategory', (req, res, next) => {
-  console.log(req.params.category)
-  console.log(req.params.subCategory)
+  const PRODUCT_CATEGORY = req.params.category;
+  const PRODUCT_NAME = req.params.subCategory;
+  let pageIndex = 1;
+  const itemsPerPage = 20;
+  if (req.query.page) pageIndex = parseInt(req.query.page);
 
-  PRODUCT_CATEGORY = req.params.category
-  PRODUCT_NAME = req.params.subCategory
-
-
-  Product.findAll({
-    attributes: ['ProductID', 'ProductName','Price'],
-    include: [
-      'images'
-    ]
-    // where: {
-    //   ProductID : 2,
-    //   // category: PRODUCT_CATEGORY,
-    //   // ProductName: PRODUCT_NAME
-    // }
+  Product.count({
+    where: {
+      Category: PRODUCT_CATEGORY,
+      SubCategory: PRODUCT_NAME
+    }
+  }).then(result => {
+    totalItems = result;
+    return Product.findAll({
+      attributes: ['ProductID', 'ProductName','Price'],
+      include: [
+        'images'
+      ],
+      where: {
+        Category: PRODUCT_CATEGORY,
+        SubCategory: PRODUCT_NAME
+      },
+      offset: (pageIndex - 1) * itemsPerPage,
+      limit: itemsPerPage
+    })
   }).then(result =>{
-    res.render('products', {"products": result } );
-    // res.send(result);
+    res.render('products', {
+      "products": result,
+      currentPage: pageIndex,
+      hasNextPage: itemsPerPage * pageIndex < totalItems,
+      hasPreviousPage: pageIndex > 1,
+      nextPage: pageIndex + 1,
+      previousPage: pageIndex - 1,
+      lastPage: Math.ceil(totalItems / itemsPerPage) 
+    });
   });
-
-
-
-  // const products = [{
-  //   ProductID : 1,
-  //   ProductName: "Addidas yeezy",
-  //   Price : 200.00,
-  //   Images: ["/assets/images/gallery/chair.jpg"]
-  // },
-  // {
-  //   ProductID : 2,
-  //   ProductName: "Addidas yeezy2",
-  //   Price : 100.00,
-  //   Images: ["/assets/images/gallery/chair.jpg"]
-  // }]
-  
 });
 
 router.get('/products/:category', (req, res, next) => {
-  console.log(req.params.category)
-  res.render('products');
+  const PRODUCT_CATEGORY = req.params.category
+  let pageIndex = 1;
+  const itemsPerPage = 20;
+  if (req.query.page) pageIndex = parseInt(req.query.page);
+  
+  Product.count({
+    where: {
+      Category: PRODUCT_CATEGORY
+    }
+  }).then(result => {
+    totalItems = result;
+    return Product.findAll({
+      attributes: ['ProductID', 'ProductName','Price'],
+      include: [
+        'images'
+      ],
+      where: {
+        Category: PRODUCT_CATEGORY
+      },
+      offset: (pageIndex - 1) * itemsPerPage,
+      limit: itemsPerPage
+    })
+  }).then(result =>{
+    res.render('products', {
+      "products": result,
+      currentPage: pageIndex,
+      hasNextPage: itemsPerPage * pageIndex < totalItems,
+      hasPreviousPage: pageIndex > 1,
+      nextPage: pageIndex + 1,
+      previousPage: pageIndex - 1,
+      lastPage: Math.ceil(totalItems / itemsPerPage) 
+    } );
+  });
 });
 
 
 router.get('/product/:id', (req, res, next) => {
-  console.log(req.params.id);
-  res.render('product-detail');
+  const id = req.params.id;
+  Product.findAll({
+    include: [
+      'images',
+      'reviews'
+    ],
+    where: {
+      ProductID: id
+    }
+  }).then(result =>{
+    // res.render('product-detail', {"product": result } );
+    res.send(result);
+  });
 });
 
 router.get('/user/cart/', (req, res, next) => {

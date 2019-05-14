@@ -45,7 +45,7 @@ app.use((error, req, res, next)=>{
   });
 });
 /// Relations ///
-Product.hasMany(Reviews,{ foreignKey:"ProductID"});
+Product.hasMany( Reviews, { foreignKey:"ProductID"});
 Reviews.belongsTo( Product, { foreignKey:"ProductID", constrains: true, onDelete: 'CASCADE' });
 
 Product.hasMany(Images, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
@@ -59,20 +59,32 @@ Orders.hasMany(OrderItems, {foreignKey:"OrderID"});
 //// connect,synch to database run WebServer ////
 
 sequelize
-  .sync({ force: false })
+  .sync({ force: true })
   .then(result => {
     // console.log(result);
-    // for(i=0; i<300; i++){
-    //   Product.create(    
-    //       {ProductID: i, 
-    //       ProductName: "Leggings", 
-    //       Description: "Elastic close-fitting garments worn over the legs ", 
-    //       Quantity: '300', 
-    //       Price:'50.00', 
-    //       SoldQuantity:'0', 
-    //       Category:'Pants', 
-    //       Weight:'.25'})
-    // }
+    for(i=0; i<30; i++){
+      Product.create({ProductID: i, 
+        ProductName: "Leggings", 
+        Description: "Elastic close-fitting garments worn over the legs ", 
+        Quantity: '300', 
+        Price:'50.00', 
+        SoldQuantity:'0', 
+        Category:'Pants',
+        SubCategory:'Jeans', 
+        Weight:'.25',
+        images :[{ Url:"https://imagescdn.simons.ca/images/4907/17783/41/A1_2.jpg" }],
+        reviews : [{
+          CustomerName : "Donis",
+          Score : 5,
+          ReviewText : "Amazing pants very good."
+        }] 
+      },{
+        include: ['images','reviews']
+      })
+      // .then(product =>{
+      //   console.log(product);
+      // })
+    }
     app.listen(8001,'localhost', function () {
       console.log("server is running");
     });
