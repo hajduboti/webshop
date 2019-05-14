@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const path = require('path');
 const allRoutes = require('./routes/all-routes');
 const sequelize = require('./mssql');
+var Sequelize = require("sequelize");
 
 const Users = require('./models/user');
 const Images = require('./models/image');
@@ -72,47 +73,80 @@ Orders.hasMany(OrderItems, {foreignKey:"OrderID"});
 //// connect,synch to database run WebServer ////
 
 sequelize
-  .sync({ force: true })
+  .sync({ force: false })
   .then(result => {
     // console.log(result);
-    for(i=0; i<30; i++){
-      Product.create({ProductID: i, 
-        ProductName: "Leggings", 
-        Brand:"Nike",
-        Description: "Elastic close-fitting garments worn over the legs ", 
-        Quantity: '300', 
-        Price:'50.00', 
-        SoldQuantity:'0', 
-        Category:'Pants',
-        SubCategory:'Jeans', 
-        Weight:'.25',
-        images :[{ Url:"https://imagescdn.simons.ca/images/4907/17783/41/A1_2.jpg" }],
-        reviews : [{
-          CustomerName : "Donis",
-          Score : 5,
-          ReviewText : "Amazing pants very good."
-        }] 
-      },{
-        include: ['images','reviews']
-      })
-      // .then(product =>{
-      //   console.log(product);
+    // for(i=0; i<30; i++){
+    //   Product.create({ProductID: i, 
+    //     ProductName: "Leggings", 
+    //     Brand:"Nike",
+    //     Description: "Elastic close-fitting garments worn over the legs ", 
+    //     Quantity: '300', 
+    //     Price:'50.00', 
+    //     SoldQuantity:'0', 
+    //     Category:'Pants',
+    //     SubCategory:'Jeans', 
+    //     Weight:'.25',
+    //     images :[{ Url:"https://imagescdn.simons.ca/images/4907/17783/41/A1_2.jpg" }],
+    //     reviews : [{
+    //       CustomerName : "Donis",
+    //       Score : 5,
+    //       ReviewText : "Amazing pants very good."
+    //     }] 
+    //   },{
+    //     include: ['images','reviews']
       // })
-    }
+    //   .then(product =>{
+    //     console.log(product);
+      // })
+    // }
     app.listen(8001,'localhost', function () {
       console.log("server is running");
+
+  ///////////////   Stored Procedure to recalculate a products score  ////////////////////  
+
+  // sequelize.query("CREATE PROCEDURE RecalculateScore " +
+  // "AS " +
+  
+  // "update Products " +
+  // "set Score = (select SUM(score)/COUNT(ReviewID * 1.0) " +
+  // "from reviews " +
+  // "where Products.ProductID = reviews.ProductID) " +
+  // "from Products " +
+  // "GO " 
+  // // +
+  
+  // // "Exec RecalculateScore "
+  // ).then(result =>{
+  //     console.log("Recaluclated Review Score " + result)
+  // });
+
+
+  sequelize.query('RecalculateScore').then(function(){
+    sequelize.query('Select * from Products where ProductID = 1', { type: Sequelize.QueryTypes.SELECT }).then(function(rows) {
+      console.log(rows);
+    });
+    });
     });
   })
   .catch(err => {
     console.log(err);
   });
+ 
 
+// Reviews.create({CustomerName:'Bob', Score:1.0, ReviewText:"No", ProductID:1}).then(result =>{
+//   console.log("Inserted Review")
+// }).catch(err=>{
+//   console.log(err)
+// })
+
+// sequelize.query('Select * from Reviews', { type: Sequelize.QueryTypes.SELECT }).then(function(rows) {
+//   console.log(rows);
+// });
   
 // Users.create({UserID:1, FirstName: "BillyBobby", LastName: "Boy", Email: 'BillyBobbyBoy@com.com', Password:'root', City:'Copenhagen', Postcode:2400, Address:'WestPlace', UserType:'Customer' }).then(Billy => {
 //   console.log("Billys's auto-generated ID:", Billy.UserID);
 // });
 
 
-// sequelize.query('Select * from Users', { type: Sequelize.QueryTypes.SELECT }).then(function(rows) {
-//   console.log(rows);
-// });
+
