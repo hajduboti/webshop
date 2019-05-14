@@ -12,7 +12,6 @@ const Product = require('./models/products');
 const Reviews = require('./models/reviews');
 const SubCategories = require('./models/subcategories');
 const Categories = require('./models/categories');
-const Brands = require('./models/brands');
 const Quantities = require('./models/quantities');
 
 const app = express();
@@ -55,19 +54,16 @@ Reviews.belongsTo( Product, { foreignKey:"ProductID", constrains: true, onDelete
 Product.hasMany(Images, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
 Images.belongsTo( Product, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
 
-Brands.hasMany(Product, {foreignKey:"BrandID" ,constrains: true, onDelete: 'CASCADE'});
-Product.belongsTo(Brands, {foreignKey:"BrandID" ,constrains: true, onDelete: 'CASCADE'});
 
-/*
-Product.hasMany(Quantities, {foreignKey:"ProductQuantityID"});
-Quantities.belongsTo(Product, { foreignKey:"ProductQuantityID", constrains: true, onDelete: 'CASCADE' });
+Quantities.belongsTo(Product, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
+Product.hasMany(Quantities, {foreignKey:"ProductID",constrains: true, onDelete: 'CASCADE'});
 
-Product.hasOne(SubCategories, {foreignKey:"SubCategoryID"});
-SubCategories.belongsTo(Product, { foreignKey:"SubCategoryID", constrains: true, onDelete: 'CASCADE' });
+Product.belongsTo(SubCategories, {foreignKey:"SubCategoryID",constrains: true, onDelete: 'CASCADE'});
+SubCategories.hasMany(Product, {foreignKey:"SubCategoryID",constrains: true, onDelete: 'CASCADE'});
 
-SubCategories.hasOne(Categories, {foreignKey:"CategoryID"});
-Categories.belongsTo(SubCategories,  { foreignKey:"CategoryID", constrains: true, onDelete: 'CASCADE' });
-*/
+SubCategories.belongsTo(Categories, {foreignKey:"CategoryID",constrains: true, onDelete: 'CASCADE'});
+Categories.hasMany(SubCategories, {foreignKey:"CategoryID",constrains: true, onDelete: 'CASCADE'});
+
 Users.hasMany(Orders, {foreignKey:"UserID"});
 OrderItems.belongsTo(Product, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
 Orders.hasMany(OrderItems, {foreignKey:"OrderID"});
@@ -82,6 +78,7 @@ sequelize
     for(i=0; i<30; i++){
       Product.create({ProductID: i, 
         ProductName: "Leggings", 
+        Brand:"Nike",
         Description: "Elastic close-fitting garments worn over the legs ", 
         Quantity: '300', 
         Price:'50.00', 
