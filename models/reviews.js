@@ -25,7 +25,7 @@ const Reviews = sequelize.define('reviews', {
     allowNull: false
   }
 }, {
-    timestamps: false
+    timestamps: true
   });
 
 module.exports = Reviews;

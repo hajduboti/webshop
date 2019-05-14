@@ -123,8 +123,8 @@ router.get('/product/:id', (req, res, next) => {
       ProductID: id
     }
   }).then(result =>{
-    // res.render('product-detail', {"product": result } );
-    res.send(result);
+    res.render('product-detail', { "product": result } );
+    // res.send(result);
   });
 });
 
