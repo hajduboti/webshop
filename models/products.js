@@ -24,7 +24,7 @@ const Products = sequelize.define('products', {
     }
   }, 
   Score: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.DOUBLE,
     allowNull: true
   }
 }, 
