@@ -10,6 +10,10 @@ const Orders = require('./models/order');
 const OrderItems = require('./models/orderitems');
 const Product = require('./models/products');
 const Reviews = require('./models/reviews');
+const SubCategories = require('./models/subcategories');
+const Categories = require('./models/categories');
+const Brands = require('./models/brands');
+const Quantities = require('./models/quantities');
 
 const app = express();
 app.use('/dist',express.static(path.join(__dirname, 'dist'), { maxAge: '30 days' }));
@@ -51,6 +55,19 @@ Reviews.belongsTo( Product, { foreignKey:"ProductID", constrains: true, onDelete
 Product.hasMany(Images, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
 Images.belongsTo( Product, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
 
+Brands.hasMany(Product, {foreignKey:"BrandID" ,constrains: true, onDelete: 'CASCADE'});
+Product.belongsTo(Brands, {foreignKey:"BrandID" ,constrains: true, onDelete: 'CASCADE'});
+
+/*
+Product.hasMany(Quantities, {foreignKey:"ProductQuantityID"});
+Quantities.belongsTo(Product, { foreignKey:"ProductQuantityID", constrains: true, onDelete: 'CASCADE' });
+
+Product.hasOne(SubCategories, {foreignKey:"SubCategoryID"});
+SubCategories.belongsTo(Product, { foreignKey:"SubCategoryID", constrains: true, onDelete: 'CASCADE' });
+
+SubCategories.hasOne(Categories, {foreignKey:"CategoryID"});
+Categories.belongsTo(SubCategories,  { foreignKey:"CategoryID", constrains: true, onDelete: 'CASCADE' });
+*/
 Users.hasMany(Orders, {foreignKey:"UserID"});
 OrderItems.belongsTo(Product, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
 Orders.hasMany(OrderItems, {foreignKey:"OrderID"});
