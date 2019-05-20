@@ -6,7 +6,6 @@ const bodyParser = require("body-parser");
 const path = require('path');
 const allRoutes = require('./routes/all-routes');
 const sequelize = require('./mssql');
-<<<<<<< HEAD
 const session = require('express-session');
 const passport = require("passport");
 const LocalStrategy = require('passport-local').Strategy;
@@ -23,11 +22,6 @@ redisClient.on('error', function(err) {
 ////     Models
 ///===============================
 const User = require('./models/user');
-=======
-var Sequelize = require("sequelize");
-
-const Users = require('./models/user');
->>>>>>> 4f3c3304c7a081759721db65447b5c5d44b13bae
 const Images = require('./models/image');
 const Orders = require('./models/order');
 const OrderItems = require('./models/orderitems');
@@ -147,14 +141,7 @@ SubCategories.hasMany(Product, {foreignKey:"SubCategoryID",constrains: true, onD
 SubCategories.belongsTo(Categories, {foreignKey:"CategoryID",constrains: true, onDelete: 'CASCADE'});
 Categories.hasMany(SubCategories, {foreignKey:"CategoryID",constrains: true, onDelete: 'CASCADE'});
 
-<<<<<<< HEAD
-SubCategories.hasOne(Categories, {foreignKey:"CategoryID"});
-Categories.belongsTo(SubCategories,  { foreignKey:"CategoryID", constrains: true, onDelete: 'CASCADE' });
-*/
-User.hasMany(Orders, {foreignKey:"UserID"});
-=======
 Users.hasMany(Orders, {foreignKey:"UserID"});
->>>>>>> 4f3c3304c7a081759721db65447b5c5d44b13bae
 OrderItems.belongsTo(Product, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
 Orders.hasMany(OrderItems, {foreignKey:"OrderID"});
 
@@ -165,7 +152,6 @@ sequelize
   .sync({ force: false })
   .then(result => {
     // console.log(result);
-<<<<<<< HEAD
     
   // for(i=0; i<30; i++){
   //   Product.create({ProductID: i, 
@@ -204,32 +190,6 @@ sequelize
     //     console.log(result);
     //   })
     // })
-=======
-    // for(i=0; i<30; i++){
-    //   Product.create({ProductID: i, 
-    //     ProductName: "Leggings", 
-    //     Brand:"Nike",
-    //     Description: "Elastic close-fitting garments worn over the legs ", 
-    //     Quantity: '300', 
-    //     Price:'50.00', 
-    //     SoldQuantity:'0', 
-    //     Category:'Pants',
-    //     SubCategory:'Jeans', 
-    //     Weight:'.25',
-    //     images :[{ Url:"https://imagescdn.simons.ca/images/4907/17783/41/A1_2.jpg" }],
-    //     reviews : [{
-    //       CustomerName : "Donis",
-    //       Score : 5,
-    //       ReviewText : "Amazing pants very good."
-    //     }] 
-    //   },{
-    //     include: ['images','reviews']
-      // })
-    //   .then(product =>{
-    //     console.log(product);
-      // })
-    // }
->>>>>>> 4f3c3304c7a081759721db65447b5c5d44b13bae
     app.listen(8001,'localhost', function () {
       console.log("server is running");
 
