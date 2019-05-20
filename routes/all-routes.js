@@ -331,8 +331,4 @@ router.get('/checkout', (req, res, next) => {
 
 });
 
-<<<<<<< HEAD
-=======
-
->>>>>>> f9d9fb747d5ee86910505e9f860404eab964c3a5
 module.exports = router;
