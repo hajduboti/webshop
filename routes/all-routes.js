@@ -226,7 +226,14 @@ router.get('/checkout', (req, res, next) => {
         Quantity: 2,
         OrderPrice: 200,
         Weight: 200
+  },{
+    ProductName: 'Shoes',
+    Quantity: 2,
+    OrderPrice: 200,
+    Weight: 200
   }]
+  
+  let MyTotalPrice = 400;
 
   sequelize.transaction(
     {isolationLevel: Sequelize.Transaction.ISOLATION_LEVELS.SERIALIZABLE},
@@ -234,7 +241,7 @@ router.get('/checkout', (req, res, next) => {
     // chain all your queries here. make sure you return them.
     return Order.create({
       PaymentID: 1,
-      TotalPrice: 20,
+      TotalPrice: MyTotalPrice,
       OrderItems: cart  
     }, {include: ['OrderItems']}).then(result => {
       console.log(result);
