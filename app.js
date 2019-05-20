@@ -11,7 +11,7 @@ const passport = require("passport");
 const LocalStrategy = require('passport-local').Strategy;
 var RedisStore = require('connect-redis')(session);
 const redis = require('redis');
-const redisClient = redis.createClient('6379', 'localhost' );
+const redisClient = redis.createClient('6379', '168.61.83.239' );
 
 redisClient.on('connect', function() {
   console.log('Redis client connected');
@@ -60,7 +60,7 @@ app.use(methodOverride("_method"));
 app.use(session({ 
   secret: 'passport-tutorial', 
   cookie: { maxAge: 1000 * 60 * 60 * 24 * 30 },
-  store: new RedisStore({ host: 'localhost', port: 6379, client: redisClient, ttl :  260}),
+  store: new RedisStore({ host: '168.61.83.239', port: 6379, client: redisClient, ttl :  260}),
   resave: false, 
   saveUninitialized: false
 }));
