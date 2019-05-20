@@ -1,26 +1,26 @@
-var Sequelize = require("sequelize");
+var DataTypes = require("sequelize");
 const sequelize = require('../mssql');
 
 const Reviews = sequelize.define('reviews', {
   ReviewID: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     autoIncrement: true,
     allowNull: false,
     primaryKey: true
   },
   CustomerName: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: false
   },
   Score: {
-    type: Sequelize.DOUBLE,
+    type: DataTypes.DOUBLE,
     allowNull: false,
     validate: {
       len: [1,5]
     }
   },
   ReviewText: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: false
   }
 },{

@@ -1,23 +1,20 @@
-var Sequelize = require("sequelize");
+const DataTypes = require("sequelize");
 const sequelize = require('../mssql');
-const OrderItems = require('../models/orderitems.js')
-const Users = require('../models/user')
 
 const Orders = sequelize.define('orders', {
   OrderID: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     autoIncrement: true,
     allowNull: false,
     primaryKey: true
   },
   PaymentID: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: false
   },
   TotalPrice: {
-    type: Sequelize.DOUBLE,
+    type: DataTypes.DOUBLE,
     allowNull: false
-
   }
 });
 

@@ -1,15 +1,15 @@
-var Sequelize = require("sequelize");
+var DataTypes = require("sequelize");
 const sequelize = require('../mssql');
 
 const SubCategories = sequelize.define('subcategories', {
   SubCategoryID: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     autoIncrement: true,
     allowNull: false,
     primaryKey: true
   },
   SubCategoryName: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: false
   }
 }, {

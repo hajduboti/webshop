@@ -38,8 +38,54 @@
         <!-- ============================================================== -->
         <!-- toggle and nav items -->
         <!-- ============================================================== -->
-        <ul class="navbar-nav float-left mr-auto">
-        </ul>
+        <div class="navbar-nav float-left mr-auto w-75">
+          <form action="/products/find" method="POST" class="w-100">
+              <div class="form-group row align-items-center m-b-0 w-100">
+                  <label class="col-md-3 text-right control-label col-form-label">Search</label>
+                  <div class="col-md-9 p-b-10 p-t-10">
+                      <div class="row">
+                          <div class="col-md-9 p-b-10 p-t-10">
+                              <input type="text" class="form-control" name="ProductName" placeholder="Name">
+                          </div>
+                          <div class="col-md-3 p-b-10 p-t-10">
+                              <button type="submit" class="btn btn-info waves-effect waves-light w-50">Search</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </form>
+            
+        </div>
+        
+        <!-- <ul class="navbar-nav float-left mr-auto">
+          <form action="">
+            <li class="nav-item">
+                <label for="fullname" class="col-sm-3 text-right control-label col-form-label">Full Name</label>
+            </li>
+            <li class="nav-item">
+                <input type="text" class="form-control" id="fullname" placeholder="Full Name Here">
+            </li>
+
+          </form>
+            <div class="row ml-5">
+                <form action="">
+              <div class="col-10">
+                  <div class="form-group row">
+                      
+                      <div class="col-sm-9">
+                         
+                      </div>
+                  </div>
+              </div>
+              <div class="col-2">
+                  <button type="submit" class="btn btn-info">Search</button>
+              </div>
+            </form>
+            </div>
+            
+            
+         
+        </ul> -->
         <!-- ============================================================== -->
         <!-- Right side toggle and nav items -->
         <!-- ============================================================== -->

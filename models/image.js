@@ -1,15 +1,15 @@
-var Sequelize = require("sequelize");
+var DataTypes = require("sequelize");
 const sequelize = require('../mssql');
 
 const Image = sequelize.define('image', {
   ImageID: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     autoIncrement: true,
     allowNull: false,
     primaryKey: true
   },
   Url: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: false
   }
 }, {

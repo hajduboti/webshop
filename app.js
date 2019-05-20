@@ -10,8 +10,7 @@ const session = require('express-session');
 const passport = require("passport");
 const LocalStrategy = require('passport-local').Strategy;
 var RedisStore = require('connect-redis')(session);
-const redis = require('redis');
-const redisClient = redis.createClient('6379', 'localhost' );
+const redisClient = require('./redis');
 
 redisClient.on('connect', function() {
   console.log('Redis client connected');
@@ -51,7 +50,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(methodOverride("_method"));
-// app.use(require('cookie-parser')());
+app.use(require('cookie-parser')());
 
 ///===============================
 ////     PASSPORT AUTH
@@ -60,7 +59,7 @@ app.use(methodOverride("_method"));
 app.use(session({ 
   secret: 'passport-tutorial', 
   cookie: { maxAge: 1000 * 60 * 60 * 24 * 30 },
-  store: new RedisStore({ host: 'localhost', port: 6379, client: redisClient, ttl :  260}),
+  store: new RedisStore({ client: redisClient, ttl :  260}),
   resave: false, 
   saveUninitialized: false
 }));
@@ -89,8 +88,11 @@ function(username, password, done) {
       Email: username
     }
   }).then(user => {
+    if(!user){
+      return done(null, false, { message: 'Incorrect username or password.' });
+    }
     user.comparePasswords(password).then(result =>{
-      if(!user || !result){
+      if(!result){
         return done(null, false, { message: 'Incorrect username or password.' });
       }
       return done(null, user);
@@ -183,20 +185,20 @@ sequelize
       }
   })
   
-    // User.create({
-    //   FirstName: "FirstName",
-    //   LastName: "LastName",
-    //   Email: "FirstName@mail.com",
-    //   Password: "123456",
-    //   City: "Denmark",
-    //   Postcode: 4000,
-    //   Address: "Address",
-    //   UserType: "user"
-    // }).then(user =>{
-    //   user.comparePasswords('1qwe').then(result=>{
-    //     console.log(result);
-    //   })
-    // })
+    User.create({
+      FirstName: "FirstName",
+      LastName: "LastName",
+      Email: "FirstName@mail.com",
+      Password: "123456",
+      City: "Denmark",
+      Postcode: 4000,
+      Address: "Address",
+      UserType: "user"
+    }).then(user =>{
+      user.comparePasswords('1qwe').then(result=>{
+        console.log(result);
+      })
+    })
     app.listen(8001,'localhost', function () {
       console.log("server is running");
     })

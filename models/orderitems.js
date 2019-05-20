@@ -1,29 +1,29 @@
-var Sequelize = require("sequelize");
+const DataTypes = require("sequelize");
 const sequelize = require('../mssql');
 
 
 const OrderItems = sequelize.define('orderItems', {
   OrderItemID: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     autoIncrement: true,
     allowNull: false,
     primaryKey: true
   },
   ProductName: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: false
   },
   Quantity: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: false,
-    defaultValue : 1
+    defaultValue: 1
   },
   OrderPrice: {
-    type: Sequelize.DOUBLE,
+    type: DataTypes.DOUBLE,
     allowNull: false
   },
   Weight: {
-    type: Sequelize.DOUBLE,
+    type: DataTypes.DOUBLE,
     allowNull: false
   }
 }, {

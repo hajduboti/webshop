@@ -1,27 +1,27 @@
-var Sequelize = require("sequelize");
+var DataTypes = require("sequelize");
 const sequelize = require('../mssql');
 
 const Quantities = sequelize.define('quantities', {
   ProductQuantityID: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     autoIncrement: true,
     allowNull: false,
     primaryKey: true
   },
   Size: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   QuantityOnStock: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: false
   },
   SoldQuantity: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: false
   },
   Weight: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: false
   }
 }, {
