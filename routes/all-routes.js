@@ -214,4 +214,8 @@ router.get('/login', (req, res, next) => {
 });
 router.get("/logout", middleware.Logout);
 router.post("/login", middleware.Login);
+
+router.get('/checkout', (req, res, next) => {
+  res.send("works")
+});
 module.exports = router;
