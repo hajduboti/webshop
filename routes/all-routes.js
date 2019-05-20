@@ -2,7 +2,12 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../models/products');
 const User = require('../models/user');
+const Order = require('../models/order');
+const OrderItems = require('../models/orderitems');
+
 var Sequelize = require("sequelize");
+const sequelize = require('../mssql');
+
 const Images = require('../models/image');
 const middleware = require('../middleware/auth');
 const SubCategories = require('../models/subcategories');
@@ -293,11 +298,41 @@ router.post("/login", middleware.Login);
 
 router.get('/checkout', (req, res, next) => {
   let cart = [{
-    ProductID : 1,
-    Quantity :1
+        ProductID: 1,
+        ProductName: 'Shoes',
+        Quantity: 2,
+        OrderPrice: 200,
+        Weight: 200
   }]
 
-  res.send("works")
+  let MyTotalPrice = 400;
+
+  sequelize.transaction(
+    {isolationLevel: Sequelize.Transaction.ISOLATION_LEVELS.REPEATABLE_READ},
+    (t) => {  
+    // chain all your queries here. make sure you return them.
+    return Order.create({
+      PaymentID: 1,
+      TotalPrice: MyTotalPrice,
+      OrderItems: cart  
+    }, {include: ['OrderItems']}).then(result => {
+      console.log(result);
+      // Transaction has been committed
+      // result is whatever the result of the promise chain returned to the transaction callback
+    }).catch(err => {
+      console.log(err);
+      return res.send(err);
+
+      // Transaction has been rolled back
+      // err is whatever rejected the promise chain returned to the transaction callback
+    });
+  });
+  res.send('gotis');
+
 });
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> f9d9fb747d5ee86910505e9f860404eab964c3a5
 module.exports = router;
