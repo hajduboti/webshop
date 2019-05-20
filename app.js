@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const path = require('path');
 const allRoutes = require('./routes/all-routes');
 const sequelize = require('./mssql');
+var Sequelize = require("sequelize");
 const session = require('express-session');
 const passport = require("passport");
 const LocalStrategy = require('passport-local').Strategy;
@@ -151,7 +152,7 @@ OrderItems.belongsTo(Orders, { foreignKey:"ProductID", as:"OrderItems" ,constrai
 //// connect,synch to database run WebServer ////
 
 sequelize
-.sync({ force: true })
+.sync({ force: false })
 .then(result => {
     // console.log(result);
   Categories.create({
@@ -237,6 +238,58 @@ sequelize
 // }).catch(err=>{
 //   console.log(err)
 // })
+
+
+
+///////////////////   Create Trigger to update quantity     //////////////////////////
+sequelize.query(
+  "alter procedure UpdateQuantity " +
+  "(@s nvarchar(255) , @id int) " +
+  "AS "+
+    
+  
+  "declare @Size nvarchar(255) "+
+  "set @Size = @s "+
+  
+  "declare @productID int "+
+  "set @productID = @id " +
+  
+  "declare @SoldQuantity int "+
+  "set @SoldQuantity = (select Quantity from orderItems where ProductID = @productID ) "+
+  
+  "declare @QuantityInStock int "+
+  "set @QuantityInStock = (select QuantityOnStock from quantities where ProductID = @productID ) - @SoldQuantity "+
+  
+  "declare @Weight float "+
+  "set @Weight = (select  weight from orderItems where ProductID = @productID) "+
+  
+  "declare @ProductQuantityID int "+
+  "set @ProductQuantityID = (select ProductQuantityID from quantities where ProductID = @productID ) "+
+  
+  "update quantities "+
+   "set size=@size, QuantityOnStock = @QuantityInStock, SoldQuantity = @SoldQuantity, weight = @weight where ProductQuantityID = @ProductQuantityID and ProductID = @productID "
+  
+  
+  )  .then(result =>{
+        console.log("Procedure created " + result)
+    }); 
+
+// sequelize.query('delete from orderItems');
+// sequelize.query('delete from Quantities');
+
+sequelize.query("insert into Quantities(Size, QuantityOnStock, SoldQuantity, Weight, ProductID) "+  "values('S', 200, 0, 2.0, 1)")
+sequelize.query( "Insert into orderItems(ProductName, Quantity, OrderPrice, Weight, ProductID) "+
+"values('Stuff', 199, 15.00, 2.0, 1)")
+
+sequelize.query("Exec UpdateQuantity @s = 'S', @id = 1 ")
+
+  sequelize.query  ('Select * from Quantities', { type: Sequelize.QueryTypes.SELECT }).then(function(rows) {
+    console.log(rows);
+})
+
+
+
+
 
 // sequelize.query('Select * from Reviews', { type: Sequelize.QueryTypes.SELECT }).then(function(rows) {
 //   console.log(rows);
