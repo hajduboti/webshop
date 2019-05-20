@@ -137,16 +137,16 @@ Quantities.belongsTo(Product, { foreignKey:"ProductID" ,constrains: true, onDele
 Product.hasMany(Quantities, {foreignKey:"ProductID",constrains: true, onDelete: 'CASCADE'});
 
 Product.belongsTo(SubCategories, {foreignKey:"SubCategoryID", as:"SubCategory",constrains: true, onDelete: 'CASCADE'});
-SubCategories.hasMany(Product, {foreignKey:"SubCategoryID",as:"SubCategory" ,constrains: true, onDelete: 'CASCADE'});
+SubCategories.hasMany(Product, {foreignKey:"SubCategoryID", as:"SubCategory" ,constrains: true, onDelete: 'CASCADE'});
 
 Categories.hasMany(SubCategories, {foreignKey:"CategoryID",as:"SubCategories", constrains: true, onDelete: 'CASCADE'});
 SubCategories.belongsTo(Categories, {foreignKey:"CategoryID", as:"SubCategories",constrains: true, onDelete: 'CASCADE'});
 
 
 User.hasMany(Orders, {foreignKey:"UserID"});
-OrderItems.belongsTo(Product, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
-Orders.hasMany(OrderItems, {foreignKey:"OrderID"});
 
+Orders.hasMany(OrderItems, {foreignKey:"OrderID", as:"OrderItems"});
+OrderItems.belongsTo(Orders, { foreignKey:"ProductID", as:"OrderItems" ,constrains: true, onDelete: 'CASCADE'});
 
 //// connect,synch to database run WebServer ////
 

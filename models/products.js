@@ -1,4 +1,4 @@
-var Sequelize = require("sequelize");
+const Sequelize = require("sequelize");
 const sequelize = require('../mssql');
 
 const Products = sequelize.define('products', {
@@ -34,8 +34,7 @@ const Products = sequelize.define('products', {
     validate: {
     len : [0,5]
     }
-  },
-
+  }
 }, {
     timestamps: false
   });
