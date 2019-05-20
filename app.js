@@ -141,7 +141,7 @@ SubCategories.hasMany(Product, {foreignKey:"SubCategoryID",constrains: true, onD
 SubCategories.belongsTo(Categories, {foreignKey:"CategoryID",constrains: true, onDelete: 'CASCADE'});
 Categories.hasMany(SubCategories, {foreignKey:"CategoryID",constrains: true, onDelete: 'CASCADE'});
 
-Users.hasMany(Orders, {foreignKey:"UserID"});
+User.hasMany(Orders, {foreignKey:"UserID"});
 OrderItems.belongsTo(Product, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
 Orders.hasMany(OrderItems, {foreignKey:"OrderID"});
 
@@ -149,8 +149,8 @@ Orders.hasMany(OrderItems, {foreignKey:"OrderID"});
 //// connect,synch to database run WebServer ////
 
 sequelize
-  .sync({ force: false })
-  .then(result => {
+.sync({ force: false })
+.then(result => {
     // console.log(result);
     
   // for(i=0; i<30; i++){
@@ -192,7 +192,8 @@ sequelize
     // })
     app.listen(8001,'localhost', function () {
       console.log("server is running");
-
+    })
+  })
   ///////////////   Stored Procedure to recalculate a products score  ////////////////////  
 
   // sequelize.query("CREATE PROCEDURE RecalculateScore " +
@@ -212,16 +213,16 @@ sequelize
   // });
 
 
-  sequelize.query('RecalculateScore').then(function(){
-    sequelize.query('Select * from Products where ProductID = 1', { type: Sequelize.QueryTypes.SELECT }).then(function(rows) {
-      console.log(rows);
-    });
-    });
-    });
-  })
-  .catch(err => {
-    console.log(err);
-  });
+  // sequelize.query('RecalculateScore').then(function(){
+  //   sequelize.query('Select * from Products where ProductID = 1', { type: Sequelize.QueryTypes.SELECT }).then(function(rows) {
+  //     console.log(rows);
+  //   });
+  //   });
+  //   });
+  // })
+  // .catch(err => {
+  //   console.log(err);
+  // });
  
 
 // Reviews.create({CustomerName:'Bob', Score:1.0, ReviewText:"No", ProductID:1}).then(result =>{
@@ -237,6 +238,3 @@ sequelize
 // User.create({UserID:1, FirstName: "BillyBobby", LastName: "Boy", Email: 'BillyBobbyBoy@com.com', Password:'root', City:'Copenhagen', Postcode:2400, Address:'WestPlace', UserType:'Customer' }).then(Billy => {
 //   console.log("Billys's auto-generated ID:", Billy.UserID);
 // });
-
-
-
