@@ -9,9 +9,15 @@ const sequelize = require('./mssql');
 const session = require('express-session');
 const passport = require("passport");
 const LocalStrategy = require('passport-local').Strategy;
-const RedisStore = require('connect-redis')(session);
+var RedisStore = require('connect-redis')(session);
 const redis = require('redis');
-const redisClient = redis.createClient();
+const redisClient = redis.createClient('6379', 'localhost' );
+redisClient.on('connect', function() {
+  console.log('Redis client connected');
+});
+redisClient.on('error', function(err) {
+  console.log(err);
+});
 ///===============================
 ////     Models
 ///===============================
@@ -45,7 +51,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(methodOverride("_method"));
-app.use(require('cookie-parser')());
+// app.use(require('cookie-parser')());
 
 ///===============================
 ////     PASSPORT AUTH
@@ -54,8 +60,9 @@ app.use(require('cookie-parser')());
 app.use(session({ 
   secret: 'passport-tutorial', 
   cookie: { maxAge: 1000 * 60 * 60 * 24 * 30 },
-  resave: false, saveUninitialized: false,
-  store: new RedisStore({ host: '168.61.83.239', port: 6379, client: redisClient, ttl: 86400 })
+  store: new RedisStore({ host: 'localhost', port: 6379, client: redisClient, ttl :  260}),
+  resave: false, 
+  saveUninitialized: false
 }));
 app.use(passport.initialize());
 app.use(passport.session());

@@ -4,6 +4,7 @@ exports.isLoggedIn = function(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
+  console.log("not logged in");
   res.redirect("/login");
 };
 
