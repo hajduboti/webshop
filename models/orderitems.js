@@ -15,7 +15,8 @@ const OrderItems = sequelize.define('orderItems', {
   },
   Quantity: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: false,
+    defaultValue : 1
   },
   OrderPrice: {
     type: Sequelize.DOUBLE,

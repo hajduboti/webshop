@@ -1,48 +1,68 @@
-var Sequelize = require("sequelize");
+const DataTypes = require("sequelize");
 const sequelize = require('../mssql');
+const bcrypt = require("bcrypt");
 
-const Users = sequelize.define('users', {
-    
-    UserID:{
-      type: Sequelize.INTEGER,
-      autoIncrement: true,
+const Model = DataTypes.Model;
+class User extends Model {
+  getFullname() {
+    return [this.FirstName, this.LastName].join(' ');
+  }
+  comparePasswords(password){
+    return bcrypt.compare(password,this.Password)
+  }
+}
+
+User.init({
+  UserID:{
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true
+  },
+  FirstName:{
+      type: DataTypes.STRING,
+      allowNull: false
+  },
+  LastName:{
+      type: DataTypes.STRING,
+      allowNull: false
+  },
+  Email:{
+      type: DataTypes.STRING,
       allowNull: false,
-      primaryKey: true
-    },
-    FirstName:{
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    LastName:{
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    Email:{
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    Password:{
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    City:{
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    Postcode:{
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    Address:{
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    UserType:{
-        type: Sequelize.STRING,
-        allowNull: false
-    }
-},{
-    timestamps: false
+      unique: true
+  },
+  Password:{
+      type: DataTypes.STRING,
+      allowNull: false
+  },
+  City:{
+      type: DataTypes.STRING,
+      allowNull: false
+  },
+  Postcode:{
+      type: DataTypes.STRING,
+      allowNull: false
+  },
+  Address:{
+      type: DataTypes.STRING,
+      allowNull: false
+  },
+  UserType:{
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue : "user"
+  }
+}, {
+  sequelize,
+  modelName: 'users',
+  timestamps: true
 });
 
-module.exports = Users;
+User.beforeCreate((user, options) => {
+  return bcrypt.hash(user.Password, 12).then(hash =>{
+    user.Password = hash;
+  });
+});
+
+module.exports = User;

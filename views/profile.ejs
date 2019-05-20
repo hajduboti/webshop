@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <!-- Favicon icon -->
+  <link rel="icon" type="image/png" sizes="16x16" href="../../assets/images/favicon.png">
+  <title>AdminBite admin Template - The Ultimate Multipurpose admin template</title>
+  <!-- This page plugin CSS -->
+  <link href="../../assets/extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link href="../../dist/css/style.min.css" rel="stylesheet">
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+</head>
+
+<body>
+  <!-- ============================================================== -->
+  <!-- Preloader - style you can find in spinners.css -->
+  <!-- ============================================================== -->
+  <div class="preloader">
+    <div class="lds-ripple">
+      <div class="lds-pos"></div>
+      <div class="lds-pos"></div>
+    </div>
+  </div>
+  <!-- ============================================================== -->
+  <!-- Main wrapper - style you can find in pages.scss -->
+  <!-- ============================================================== -->
+  <div id="main-wrapper">
+    <!-- ============================================================== -->
+    <!-- Topbar header - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <% include ./partials/header %>
+    <!-- ============================================================== -->
+    <!-- End Topbar header -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Left Sidebar - style you can find in sidebar.scss  -->
+    <!-- ============================================================== -->
+    <% include ./partials/sidebar %>
+    <!-- ============================================================== -->
+    <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+    <!-- ============================================================== -->
+    <!-- ============================================================== -->
+    <!-- Page wrapper  -->
+    <!-- ============================================================== -->
+    <div class="page-wrapper">
+      <!-- ============================================================== -->
+      <!-- Container fluid  -->
+      <!-- ============================================================== -->
+      <div class="container-fluid">
+        <!-- ============================================================== -->
+        <!-- Start Page Content -->
+        <!-- ============================================================== -->
+        <div class="row">
+          <div class="col-12 col-lg-6 offset-lg-3">
+              <div class="card">
+                  <h1 class="text-center p-3">User Profile</h1>
+                  <div class="card-body">
+                      <form class="form-horizontal form-material"  action="./profile?_method=PUT" method="POST">
+                          <div class="form-group">
+                              <label class="col-md-12">First Name</label>
+                              <div class="col-md-12">
+                                  <input type="text" name="FirstName" value="<%= user.FirstName %>" class="form-control form-control-line">
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <label class="col-md-12">Last Name</label>
+                              <div class="col-md-12">
+                                  <input type="text" name="LastName" value="<%= user.LastName %>" class="form-control form-control-line">
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <label for="example-email" class="col-md-12">Email</label>
+                              <div class="col-md-12">
+                                  <input type="email" readonly class="form-control form-control-line" name="Email" value="<%= user.Email %>">
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <label class="col-md-12">City</label>
+                              <div class="col-md-12">
+                                  <input type="text" name="City" class="form-control form-control-line" value="<%= user.City %>">
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <label class="col-md-12">Address</label>
+                              <div class="col-md-12">
+                                  <input type="text" name="Address" class="form-control form-control-line" value="<%= user.Address %>">
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <label class="col-md-12">Postcode</label>
+                              <div class="col-md-12">
+                                  <input type="number" name="Postcode" class="form-control form-control-line" value="<%= user.Postcode %>">
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <label class="col-md-12">Phone Number</label>
+                              <div class="col-md-12">
+                                  <input type="text" class="form-control form-control-line">
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              <div class="col-sm-12">
+                                  <button class="btn btn-success">Update Profile</button>
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+      
+              </div>
+          </div>
+        </div>
+       
+        <!-- ============================================================== -->
+        <!-- End PAge Content -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Right sidebar -->
+        <!-- ============================================================== -->
+        <!-- .right-sidebar -->
+        <!-- ============================================================== -->
+        <!-- End Right sidebar -->
+        <!-- ============================================================== -->
+      </div>
+      <!-- ============================================================== -->
+      <!-- End Container fluid  -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- footer -->
+      <!-- ============================================================== -->
+      <footer class="footer text-center">
+        All Rights Reserved by AdminBite admin. Designed and Developed by <a href="https://wrappixel.com">WrapPixel</a>.
+      </footer>
+      <!-- ============================================================== -->
+      <!-- End footer -->
+      <!-- ============================================================== -->
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Page wrapper  -->
+    <!-- ============================================================== -->
+  </div>
+  <!-- ============================================================== -->
+  <!-- End Wrapper -->
+  <!-- ============================================================== -->
+  <!-- ============================================================== -->
+  <!-- All Jquery -->
+  <!-- ============================================================== -->
+  <script src="../../assets/libs/jquery/dist/jquery.min.js"></script>
+  <!-- Bootstrap tether Core JavaScript -->
+  <script src="../../assets/libs/popper.js/dist/umd/popper.min.js"></script>
+  <script src="../../assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+  <!-- apps -->
+  <script src="../../dist/js/app.min.js"></script>
+  <script src="../../dist/js/app.init.js"></script>
+  <script src="../../dist/js/app-style-switcher.js"></script>
+  <!-- slimscrollbar scrollbar JavaScript -->
+  <script src="../../assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
+  <script src="../../assets/extra-libs/sparkline/sparkline.js"></script>
+  <!--Wave Effects -->
+  <script src="../../dist/js/waves.js"></script>
+  <!--Menu sidebar -->
+  <script src="../../dist/js/sidebarmenu.js"></script>
+  <!--Custom JavaScript -->
+  <script src="../../dist/js/custom.min.js"></script>
+  <!--This page plugins -->
+  <script src="../../assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
+  <script src="../../dist/js/pages/datatable/datatable-basic.init.js"></script>
+</body>
+
+</html>

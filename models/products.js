@@ -16,21 +16,44 @@ const Products = sequelize.define('products', {
     type: Sequelize.STRING,
     allowNull: false
   },
+  Quantity: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    validate: {
+      isInt: true,
+      len: [0,10000]
+    }
+  },
   Price: {
     type: Sequelize.DOUBLE,
     allowNull: false,
     validate: {
-      len : [0,1000000]
+    len : [0,1000000]
     }
-  }, 
-  Score: {
+  },
+  SoldQuantity: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    validate: {
+      isInt: true,
+      len: [0,100000]
+    }
+  },
+  Category: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  SubCategory:{
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  Weight: {
     type: Sequelize.DOUBLE,
-    allowNull: true
+    allowNull: false
   }
-}, 
-{
-  timestamps: false
-});
+}, {
+    timestamps: false
+  });
 
 module.exports = Products;
 
