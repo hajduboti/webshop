@@ -12,6 +12,10 @@ const Products = sequelize.define('products', {
     type: Sequelize.STRING,
     allowNull: false
   },
+  Brand: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
   Description: {
     type: Sequelize.STRING,
     allowNull: false

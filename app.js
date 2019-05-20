@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const path = require('path');
 const allRoutes = require('./routes/all-routes');
 const sequelize = require('./mssql');
+<<<<<<< HEAD
 const session = require('express-session');
 const passport = require("passport");
 const LocalStrategy = require('passport-local').Strategy;
@@ -22,6 +23,11 @@ redisClient.on('error', function(err) {
 ////     Models
 ///===============================
 const User = require('./models/user');
+=======
+var Sequelize = require("sequelize");
+
+const Users = require('./models/user');
+>>>>>>> 4f3c3304c7a081759721db65447b5c5d44b13bae
 const Images = require('./models/image');
 const Orders = require('./models/order');
 const OrderItems = require('./models/orderitems');
@@ -29,7 +35,6 @@ const Product = require('./models/products');
 const Reviews = require('./models/reviews');
 const SubCategories = require('./models/subcategories');
 const Categories = require('./models/categories');
-const Brands = require('./models/brands');
 const Quantities = require('./models/quantities');
 const methodOverride = require("method-override");
 const app = express();
@@ -132,20 +137,24 @@ Reviews.belongsTo( Product, { foreignKey:"ProductID", constrains: true, onDelete
 Product.hasMany(Images, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
 Images.belongsTo( Product, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
 
-Brands.hasMany(Product, {foreignKey:"BrandID" ,constrains: true, onDelete: 'CASCADE'});
-Product.belongsTo(Brands, {foreignKey:"BrandID" ,constrains: true, onDelete: 'CASCADE'});
 
-/*
-Product.hasMany(Quantities, {foreignKey:"ProductQuantityID"});
-Quantities.belongsTo(Product, { foreignKey:"ProductQuantityID", constrains: true, onDelete: 'CASCADE' });
+Quantities.belongsTo(Product, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
+Product.hasMany(Quantities, {foreignKey:"ProductID",constrains: true, onDelete: 'CASCADE'});
 
-Product.hasOne(SubCategories, {foreignKey:"SubCategoryID"});
-SubCategories.belongsTo(Product, { foreignKey:"SubCategoryID", constrains: true, onDelete: 'CASCADE' });
+Product.belongsTo(SubCategories, {foreignKey:"SubCategoryID",constrains: true, onDelete: 'CASCADE'});
+SubCategories.hasMany(Product, {foreignKey:"SubCategoryID",constrains: true, onDelete: 'CASCADE'});
 
+SubCategories.belongsTo(Categories, {foreignKey:"CategoryID",constrains: true, onDelete: 'CASCADE'});
+Categories.hasMany(SubCategories, {foreignKey:"CategoryID",constrains: true, onDelete: 'CASCADE'});
+
+<<<<<<< HEAD
 SubCategories.hasOne(Categories, {foreignKey:"CategoryID"});
 Categories.belongsTo(SubCategories,  { foreignKey:"CategoryID", constrains: true, onDelete: 'CASCADE' });
 */
 User.hasMany(Orders, {foreignKey:"UserID"});
+=======
+Users.hasMany(Orders, {foreignKey:"UserID"});
+>>>>>>> 4f3c3304c7a081759721db65447b5c5d44b13bae
 OrderItems.belongsTo(Product, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
 Orders.hasMany(OrderItems, {foreignKey:"OrderID"});
 
@@ -156,6 +165,7 @@ sequelize
   .sync({ force: false })
   .then(result => {
     // console.log(result);
+<<<<<<< HEAD
     
   // for(i=0; i<30; i++){
   //   Product.create({ProductID: i, 
@@ -194,20 +204,79 @@ sequelize
     //     console.log(result);
     //   })
     // })
+=======
+    // for(i=0; i<30; i++){
+    //   Product.create({ProductID: i, 
+    //     ProductName: "Leggings", 
+    //     Brand:"Nike",
+    //     Description: "Elastic close-fitting garments worn over the legs ", 
+    //     Quantity: '300', 
+    //     Price:'50.00', 
+    //     SoldQuantity:'0', 
+    //     Category:'Pants',
+    //     SubCategory:'Jeans', 
+    //     Weight:'.25',
+    //     images :[{ Url:"https://imagescdn.simons.ca/images/4907/17783/41/A1_2.jpg" }],
+    //     reviews : [{
+    //       CustomerName : "Donis",
+    //       Score : 5,
+    //       ReviewText : "Amazing pants very good."
+    //     }] 
+    //   },{
+    //     include: ['images','reviews']
+      // })
+    //   .then(product =>{
+    //     console.log(product);
+      // })
+    // }
+>>>>>>> 4f3c3304c7a081759721db65447b5c5d44b13bae
     app.listen(8001,'localhost', function () {
       console.log("server is running");
+
+  ///////////////   Stored Procedure to recalculate a products score  ////////////////////  
+
+  // sequelize.query("CREATE PROCEDURE RecalculateScore " +
+  // "AS " +
+  
+  // "update Products " +
+  // "set Score = (select SUM(score)/COUNT(ReviewID * 1.0) " +
+  // "from reviews " +
+  // "where Products.ProductID = reviews.ProductID) " +
+  // "from Products " +
+  // "GO " 
+  // // +
+  
+  // // "Exec RecalculateScore "
+  // ).then(result =>{
+  //     console.log("Recaluclated Review Score " + result)
+  // });
+
+
+  sequelize.query('RecalculateScore').then(function(){
+    sequelize.query('Select * from Products where ProductID = 1', { type: Sequelize.QueryTypes.SELECT }).then(function(rows) {
+      console.log(rows);
+    });
+    });
     });
   })
   .catch(err => {
     console.log(err);
   });
+ 
 
+// Reviews.create({CustomerName:'Bob', Score:1.0, ReviewText:"No", ProductID:1}).then(result =>{
+//   console.log("Inserted Review")
+// }).catch(err=>{
+//   console.log(err)
+// })
+
+// sequelize.query('Select * from Reviews', { type: Sequelize.QueryTypes.SELECT }).then(function(rows) {
+//   console.log(rows);
+// });
   
 // User.create({UserID:1, FirstName: "BillyBobby", LastName: "Boy", Email: 'BillyBobbyBoy@com.com', Password:'root', City:'Copenhagen', Postcode:2400, Address:'WestPlace', UserType:'Customer' }).then(Billy => {
 //   console.log("Billys's auto-generated ID:", Billy.UserID);
 // });
 
 
-// sequelize.query('Select * from Users', { type: Sequelize.QueryTypes.SELECT }).then(function(rows) {
-//   console.log(rows);
-// });
+
