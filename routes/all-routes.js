@@ -216,6 +216,11 @@ router.get("/logout", middleware.Logout);
 router.post("/login", middleware.Login);
 
 router.get('/checkout', (req, res, next) => {
+  let cart = [{
+    ProductID : 1,
+    Quantity :1
+  }]
+
   res.send("works")
 });
 module.exports = router;
