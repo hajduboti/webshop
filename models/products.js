@@ -20,14 +20,6 @@ const Products = sequelize.define('products', {
     type: Sequelize.STRING,
     allowNull: false
   },
-  Quantity: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-    validate: {
-      isInt: true,
-      len: [0,10000]
-    }
-  },
   Price: {
     type: Sequelize.DOUBLE,
     allowNull: false,
@@ -35,26 +27,15 @@ const Products = sequelize.define('products', {
     len : [0,1000000]
     }
   },
-  SoldQuantity: {
-    type: Sequelize.INTEGER,
+  Score: {
+    type: Sequelize.DOUBLE,
     allowNull: false,
+    defaultValue : 0,
     validate: {
-      isInt: true,
-      len: [0,100000]
+    len : [0,5]
     }
   },
-  Category: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  SubCategory:{
-    type: Sequelize.STRING,
-    allowNull: false
-  },
-  Weight: {
-    type: Sequelize.DOUBLE,
-    allowNull: false
-  }
+
 }, {
     timestamps: false
   });

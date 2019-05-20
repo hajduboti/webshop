@@ -4,7 +4,9 @@ const Product = require('../models/products');
 const User = require('../models/user');
 var Sequelize = require("sequelize");
 const Images = require('../models/image');
-const middleware = require('../middleware/auth')
+const middleware = require('../middleware/auth');
+const SubCategories = require('../models/subcategories');
+
 router.get('/', (req, res, next) => {
   res.redirect('/products');
 });
@@ -19,7 +21,7 @@ router.get('/products/', (req, res, next) => {
     return Product.findAll({
       attributes: ['ProductID', 'ProductName','Price'],
       include: [
-        'images'
+        'Images'
       ],
       offset: (pageIndex - 1) * itemsPerPage,
       limit: itemsPerPage
@@ -39,27 +41,30 @@ router.get('/products/', (req, res, next) => {
 
 router.get('/products/:category/:subCategory', (req, res, next) => {
   const PRODUCT_CATEGORY = req.params.category;
-  const PRODUCT_NAME = req.params.subCategory;
+  const SUB_CATEGORY = req.params.subCategory;
   let pageIndex = 1;
   const itemsPerPage = 20;
   if (req.query.page) pageIndex = parseInt(req.query.page);
 
   Product.count({
-    where: {
-      Category: PRODUCT_CATEGORY,
-      SubCategory: PRODUCT_NAME
-    }
+    include:[{
+      model : SubCategories,
+      as : 'SubCategory',
+      where : { SubCategoryName: SUB_CATEGORY }
+    }]
   }).then(result => {
     totalItems = result;
     return Product.findAll({
       attributes: ['ProductID', 'ProductName','Price'],
-      include: [
-        'images'
+      include: [ {
+        model : Images,
+        as : 'Images'   
+      },{
+        model : SubCategories,
+        where : {SubCategoryName: SUB_CATEGORY },
+        as :'SubCategory'
+      }
       ],
-      where: {
-        Category: PRODUCT_CATEGORY,
-        SubCategory: PRODUCT_NAME
-      },
       offset: (pageIndex - 1) * itemsPerPage,
       limit: itemsPerPage
     })
@@ -113,7 +118,14 @@ router.get('/products/:category', (req, res, next) => {
 });
 router.post('/products/addtocart/:id', (req, res, next) => {
   const id = req.params.id
-  Product.findByPk(id).then(product =>{
+  Product.find({
+    where: { ProjectID : id },
+    attributes: ['ProductID', 'ProductName', 'Price'],
+    include: [
+      'images'
+    ]
+  }).then(product =>{
+    product.Quantity = 1;
     if(!req.cookies.cart) req.cookies.cart = []
     let cartCookie = req.cookies.cart
     let el = cartCookie.find(item=>{

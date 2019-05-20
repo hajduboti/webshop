@@ -12,6 +12,7 @@ const LocalStrategy = require('passport-local').Strategy;
 var RedisStore = require('connect-redis')(session);
 const redis = require('redis');
 const redisClient = redis.createClient('6379', 'localhost' );
+
 redisClient.on('connect', function() {
   console.log('Redis client connected');
 });
@@ -125,21 +126,22 @@ app.use((error, req, res, next)=>{
 
 
 /// Relations ///
-Product.hasMany( Reviews, { foreignKey:"ProductID"});
-Reviews.belongsTo( Product, { foreignKey:"ProductID", constrains: true, onDelete: 'CASCADE' });
+Product.hasMany( Reviews, { foreignKey:"ProductID", as:"Reviews"});
+Reviews.belongsTo( Product, { foreignKey:"ProductID",as:"Reviews", constrains: true, onDelete: 'CASCADE' });
 
-Product.hasMany(Images, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
-Images.belongsTo( Product, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
+Product.hasMany(Images, { foreignKey:"ProductID", as:"Images" ,constrains: true, onDelete: 'CASCADE'});
+Images.belongsTo( Product, { foreignKey:"ProductID", as:"Images" ,constrains: true, onDelete: 'CASCADE'});
 
 
 Quantities.belongsTo(Product, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
 Product.hasMany(Quantities, {foreignKey:"ProductID",constrains: true, onDelete: 'CASCADE'});
 
-Product.belongsTo(SubCategories, {foreignKey:"SubCategoryID",constrains: true, onDelete: 'CASCADE'});
-SubCategories.hasMany(Product, {foreignKey:"SubCategoryID",constrains: true, onDelete: 'CASCADE'});
+Product.belongsTo(SubCategories, {foreignKey:"SubCategoryID", as:"SubCategory",constrains: true, onDelete: 'CASCADE'});
+SubCategories.hasMany(Product, {foreignKey:"SubCategoryID",as:"SubCategory" ,constrains: true, onDelete: 'CASCADE'});
 
-SubCategories.belongsTo(Categories, {foreignKey:"CategoryID",constrains: true, onDelete: 'CASCADE'});
-Categories.hasMany(SubCategories, {foreignKey:"CategoryID",constrains: true, onDelete: 'CASCADE'});
+Categories.hasMany(SubCategories, {foreignKey:"CategoryID",as:"SubCategories", constrains: true, onDelete: 'CASCADE'});
+SubCategories.belongsTo(Categories, {foreignKey:"CategoryID", as:"SubCategories",constrains: true, onDelete: 'CASCADE'});
+
 
 User.hasMany(Orders, {foreignKey:"UserID"});
 OrderItems.belongsTo(Product, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
@@ -149,33 +151,38 @@ Orders.hasMany(OrderItems, {foreignKey:"OrderID"});
 //// connect,synch to database run WebServer ////
 
 sequelize
-.sync({ force: false })
+.sync({ force: true })
 .then(result => {
     // console.log(result);
-    
-  // for(i=0; i<30; i++){
-  //   Product.create({ProductID: i, 
-  //     ProductName: "Leggings", 
-  //     Description: "Elastic close-fitting garments worn over the legs",  
-  //     Price:'50.00',  
-  //     Category:'Pants',
-  //     SubCategory:'Jeans', 
-  //     images :[{ Url:"https://imagescdn.simons.ca/images/4907/17783/41/A1_2.jpg" }],
-  //     reviews : [{
-  //       CustomerName : "Donis",
-  //       Score : 5,
-  //       ReviewText : "Amazing pants very good."
-  //     }],
-  //     SoldQuantity : 0,
-  //     Weight : 1,
-  //     Quantity : 10
-  //   },{
-  //     include: ['images','reviews']
-  //   })
-  //   .then(product =>{
-  //     // console.log(product);
-  //   })
-  //   }
+  Categories.create({
+    CategoryName: "Pants",
+    SubCategories:[{ SubCategoryName: "Jeans"}]
+  },{
+    include: ['SubCategories']
+  }).then(result=>{
+    for(i=0; i<30; i++){
+      Product.create({
+        ProductName: "Leggings", 
+        Brand: "Addidas",
+        Description: "Elastic close-fitting garments worn over the legs",  
+        Price: 50,
+        Images :[{ Url:"https://imagescdn.simons.ca/images/4907/17783/41/A1_2.jpg" }],
+        Reviews : [{
+          CustomerName : "Donis",
+          Score : 5,
+          ReviewText : "Amazing pants very good."
+        }],
+        SubCategoryID : 1
+        // SubCategoryID:[{ SubCategoryName: "Addidas"}]
+      },{
+        include: ['Images','Reviews']
+      })
+      .then(product =>{
+        // console.log(product);
+      })
+      }
+  })
+  
     // User.create({
     //   FirstName: "FirstName",
     //   LastName: "LastName",
