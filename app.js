@@ -163,11 +163,7 @@ sequelize
       console.log("server is running");
     })
   })
-Reviews.create({
-    CustomerName : "Donis",
-    Score : 5,
-    ReviewText : "Amazing pants very good."
-})
+
 
 
 
