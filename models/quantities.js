@@ -18,7 +18,8 @@ const Quantities = sequelize.define('quantities', {
   },
   SoldQuantity: {
     type: DataTypes.INTEGER,
-    allowNull: false
+    allowNull: false,
+    defaultValue : 0
   },
   Weight: {
     type: DataTypes.FLOAT,
