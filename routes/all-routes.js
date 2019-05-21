@@ -307,7 +307,7 @@ router.get('/checkout', (req, res, next) => {
         ProductID: 1,
         ProductName: 'Shoes',
         Quantity: 2,
-        OrderPrice: 200,
+        Price: 200,
         Weight: 200
   }]
 

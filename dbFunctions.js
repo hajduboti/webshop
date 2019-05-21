@@ -6,7 +6,6 @@ module.exports = {
 
   sequelize.query("CREATE PROCEDURE RecalculateScore " +
   "AS " +
-  
   "update Products " +
   "set Score = (select SUM(score)/COUNT(ReviewID * 1.0) " +
   "from reviews " +

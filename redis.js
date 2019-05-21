@@ -3,7 +3,7 @@ const bluebird = require('bluebird');
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 
-const client = redis.createClient( 6379 , 'localhost' );
+const client = redis.createClient( 6379 , 'localhost', { password : 'password' } );
 
 client.on('connect', function() {
     console.log('Connected to Redis server.');

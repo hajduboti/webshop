@@ -31,6 +31,8 @@ const Reviews = require('./models/reviews');
 const SubCategories = require('./models/subcategories');
 const Categories = require('./models/categories');
 const Quantities = require('./models/quantities');
+
+
 const methodOverride = require("method-override");
 const app = express();
 
@@ -136,8 +138,8 @@ Product.hasMany(Images, { foreignKey:"ProductID", as:"Images" ,constrains: true,
 Images.belongsTo( Product, { foreignKey:"ProductID", as:"Images" ,constrains: true, onDelete: 'CASCADE'});
 
 
-Quantities.belongsTo(Product, { foreignKey:"ProductID" ,constrains: true, onDelete: 'CASCADE'});
-Product.hasMany(Quantities, {foreignKey:"ProductID",constrains: true, onDelete: 'CASCADE'});
+Quantities.belongsTo(Product, { foreignKey:"ProductID" ,  as:"Quantities",constrains: true, onDelete: 'CASCADE'});
+Product.hasMany(Quantities, {foreignKey:"ProductID",  as:"Quantities",constrains: true, onDelete: 'CASCADE'});
 
 Product.belongsTo(SubCategories, {foreignKey:"SubCategoryID", as:"SubCategory",constrains: true, onDelete: 'CASCADE'});
 SubCategories.hasMany(Product, {foreignKey:"SubCategoryID", as:"SubCategory" ,constrains: true, onDelete: 'CASCADE'});
@@ -155,49 +157,7 @@ OrderItems.belongsTo(Orders, { foreignKey:"ProductID", as:"OrderItems" ,constrai
 
 sequelize
 .sync({ force: true })
-.then(result => {
-    // console.log(result);
-  Categories.create({
-    CategoryName: "Pants",
-    SubCategories:[{ SubCategoryName: "Jeans"}]
-  },{
-    include: ['SubCategories']
-  }).then(result=>{
-    for(i=0; i<30; i++){
-      Product.create({
-        ProductName: "Leggings", 
-        Brand: "Addidas",
-        Description: "Elastic close-fitting garments worn over the legs",  
-        Price: 50,
-        Images :[{ Url:"https://imagescdn.simons.ca/images/4907/17783/41/A1_2.jpg" }],
-        Reviews : [{
-          CustomerName : "Donis",
-          Score : 5,
-          ReviewText : "Amazing pants very good."
-        }],
-        SubCategoryID : 1
-        // SubCategoryID:[{ SubCategoryName: "Addidas"}]
-      },{
-        include: ['Images','Reviews']
-      })
-      .then(product =>{
-        // console.log(product);
-      })
-      }
-  })
-  
-    User.create({
-      FirstName: "FirstName",
-      LastName: "LastName",
-      Email: "FirstName@mail.com",
-      Password: "123456",
-      City: "Denmark",
-      Postcode: 4000,
-      Address: "Address",
-      UserType: "user"
-    }).then(user =>{
-      
-    })
+.then(() => {
     app.listen(8001,'localhost', function () {
       console.log("server is running");
     })
@@ -210,10 +170,3 @@ sequelize
 
 
 
-// sequelize.query('Select * from Reviews', { type: Sequelize.QueryTypes.SELECT }).then(function(rows) {
-//   console.log(rows);
-// });
-  
-// User.create({UserID:1, FirstName: "BillyBobby", LastName: "Boy", Email: 'BillyBobbyBoy@com.com', Password:'root', City:'Copenhagen', Postcode:2400, Address:'WestPlace', UserType:'Customer' }).then(Billy => {
-//   console.log("Billys's auto-generated ID:", Billy.UserID);
-// });
