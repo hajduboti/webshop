@@ -3,8 +3,8 @@ const redis = require('redis');
 const bluebird = require('bluebird');
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
-console.log(process.env.REDIS_PASSWORD);
-const client = redis.createClient( 6379 , 'localhost', { password : process.env.REDIS_PASSWORD } );
+
+const client = redis.createClient( 6379 , process.env.REDIS_IP, { password : process.env.REDIS_PASSWORD } );
 
 client.on('connect', function() {
     console.log('Connected to Redis server.');
