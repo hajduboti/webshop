@@ -1,17 +1,21 @@
 const express = require('express');
 const router = express.Router();
+const Sequelize = require("sequelize");
+const sequelize = require('../mssql');
+
+const middleware = require('../middleware/auth');
+const redis = require('../redis'); 
+///===============================
+////     MODELS
+///===============================
+
+const Images = require('../models/image');
 const Product = require('../models/products');
 const User = require('../models/user');
 const Order = require('../models/order');
 const OrderItems = require('../models/orderitems');
-
-var Sequelize = require("sequelize");
-const sequelize = require('../mssql');
-
-const Images = require('../models/image');
-const middleware = require('../middleware/auth');
 const SubCategories = require('../models/subcategories');
-const redis = require('../redis'); 
+const Quantities = require('../models/quantities');
 
 router.get('/', (req, res, next) => {
   res.redirect('/products');
@@ -173,7 +177,14 @@ router.post('/products/addtocart/:id', (req, res, next) => {
     where: { ProductID: id },
     attributes: ['ProductID', 'ProductName', 'Price'],
     include: [
-      'Images'
+      {
+        model: Images,
+        as: 'Images'
+      },
+      {
+        model: Quantities,
+        as: 'Quantities'
+      }
     ],
     raw: true
   }).then(product => {
