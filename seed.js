@@ -84,7 +84,8 @@ sequelize
   })
 
     // dbFunctions.initRecalculateScore()
-    // dbFunctions.initUpdateQuantity()   
+    // dbFunctions.initUpdateQuantity()  
+    // dbFunctions.initUpdateReviewTrigger() 
     
   })
 

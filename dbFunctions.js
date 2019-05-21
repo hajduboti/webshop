@@ -1,6 +1,8 @@
 const sequelize = require('./mssql');
 var Sequelize = require("sequelize");
+
 module.exports = {
+
 ///////////////   Stored Procedure to recalculate a products score  ////////////////////  
  initRecalculateScore: function(){
 
@@ -29,6 +31,15 @@ RecalculateScore: function(){
   .catch(err => {
     console.log(err);
   });
+},
+
+initUpdateReviewTrigger: function(){
+sequelize.query("create trigger updateReviews on reviews " +
+    "after insert as " +
+    "begin " +
+    "exec RecalculateScore "+
+    "end ")
+console.log("Created ReviewUpdate Trigger")
 },
 
 
@@ -69,8 +80,6 @@ initUpdateQuantity: function(){
 
 
 UpdateQuantity: function(productID, orderID){
-    // console.log( "Exec UpdateQuantity @s="+size+"" +", @id="+productID+"" )
-
     sequelize.query( "Exec UpdateQuantity @id="+productID+"" +", @orderID="+orderID+"" )
 
     sequelize.query('Select * from Quantities', { type: Sequelize.QueryTypes.SELECT }).then(function(rows) {

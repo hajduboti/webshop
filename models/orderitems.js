@@ -25,6 +25,10 @@ const OrderItems = sequelize.define('orderItems', {
   Weight: {
     type: DataTypes.DOUBLE,
     allowNull: false
+  },
+  ProductID: {
+    type: DataTypes.INTEGER,
+    allowNull: false
   }
 }, {
     timestamps: false

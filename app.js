@@ -163,9 +163,11 @@ sequelize
       console.log("server is running");
     })
   })
-// db.initUpdateQuantity()
-// db.UpdateQuantity('s', 1)
-
+Reviews.create({
+    CustomerName : "Donis",
+    Score : 5,
+    ReviewText : "Amazing pants very good."
+})
 
 
 
