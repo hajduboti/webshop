@@ -49,7 +49,7 @@ initUpdateQuantity: function(){
         "set @productID = @id " +
         
         "declare @SoldQuantity int "+
-        "set @SoldQuantity = (select Quantity from orderItems where ProductID = @productID ) "+
+        "set @SoldQuantity = (select SUM(Quantity) from orderItems where ProductID = @productID )"+
         
         "declare @QuantityInStock int "+
         "set @QuantityInStock = (select QuantityOnStock from quantities where ProductID = @productID ) - @SoldQuantity "+
@@ -71,11 +71,11 @@ initUpdateQuantity: function(){
 
 
 UpdateQuantity: function(size, productID){
-    // console.log("CALL UpdateQuantity @s='" + size + "'" ,", @id="+ productID + "")
-    // sequelize.query("CALL UpdateQuantity @s='" + size + "'" ,", @id="+ productID + "")
-    sequelize.query("CALL UpdateQuantity(:s, :id)", { replacements: {s : size, 
-                                                                     id:  productID} })
-  sequelize.query  ('Select * from Quantities', { type: Sequelize.QueryTypes.SELECT }).then(function(rows) {
+    console.log( "Exec UpdateQuantity @s="+size+"" +", @id="+productID+"" )
+
+    sequelize.query( "Exec UpdateQuantity @s="+size+"" +", @id="+productID+"" )
+
+    sequelize.query('Select * from Quantities', { type: Sequelize.QueryTypes.SELECT }).then(function(rows) {
     console.log(rows);
 })
 

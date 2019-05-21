@@ -204,8 +204,8 @@ sequelize
       console.log("server is running");
     })
   })
-
-db.UpdateQuantity('S', 1)
+db.initUpdateQuantity()
+db.UpdateQuantity('s', 1)
 
 
 
