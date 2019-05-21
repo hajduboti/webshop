@@ -163,9 +163,10 @@ sequelize
       console.log("server is running");
     })
   })
-db.initUpdateQuantity()
-db.UpdateQuantity('s', 1)
 
+
+//Update the quantity table for remianing/sold items under product id 1 with order of id 6
+// db.UpdateQuantity(1, 6)
 
 
 

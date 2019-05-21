@@ -38,29 +38,28 @@ RecalculateScore: function(){
 initUpdateQuantity: function(){
     sequelize.query(
         "alter procedure UpdateQuantity " +
-        "(@s nvarchar(255) , @id int) " +
+        "(@id int, @orderID int) " +
         "AS "+
-        
-        "declare @Size nvarchar(255) "+
-        "set @Size = @s "+
-        
+
+
         "declare @productID int "+
         "set @productID = @id " +
+
+        "declare @order int "+
+        "set @order = @orderID " +
         
         "declare @SoldQuantity int "+
-        "set @SoldQuantity = (select SUM(Quantity) from orderItems where ProductID = @productID )"+
-        
+        "set @SoldQuantity = (select SUM(Quantity) from orderItems where ProductID = @productID)"+
+      
         "declare @QuantityInStock int "+
-        "set @QuantityInStock = (select QuantityOnStock from quantities where ProductID = @productID ) - @SoldQuantity "+
+        "set @QuantityInStock = (select QuantityOnStock from quantities where ProductID = @productID ) - (@SoldQuantity where orderItemID = @orderID) "+
         
-        "declare @Weight float "+
-        "set @Weight = (select  weight from orderItems where ProductID = @productID) "+
         
         "declare @ProductQuantityID int "+
         "set @ProductQuantityID = (select ProductQuantityID from quantities where ProductID = @productID ) "+
         
         "update quantities "+
-        "set size=@size, QuantityOnStock = @QuantityInStock, SoldQuantity = @SoldQuantity, weight = @weight where ProductQuantityID = @ProductQuantityID and ProductID = @productID "
+        "set QuantityOnStock = @QuantityInStock, SoldQuantity = @SoldQuantity where ProductQuantityID = @ProductQuantityID and ProductID = @productID "
         
         
     )  .then(result =>{
@@ -69,10 +68,10 @@ initUpdateQuantity: function(){
     },
 
 
-UpdateQuantity: function(size, productID){
-    console.log( "Exec UpdateQuantity @s="+size+"" +", @id="+productID+"" )
+UpdateQuantity: function(productID, orderID){
+    // console.log( "Exec UpdateQuantity @s="+size+"" +", @id="+productID+"" )
 
-    sequelize.query( "Exec UpdateQuantity @s="+size+"" +", @id="+productID+"" )
+    sequelize.query( "Exec UpdateQuantity @id="+productID+"" +", @orderID="+orderID+"" )
 
     sequelize.query('Select * from Quantities', { type: Sequelize.QueryTypes.SELECT }).then(function(rows) {
     console.log(rows);
