@@ -154,7 +154,7 @@ OrderItems.belongsTo(Orders, { foreignKey:"ProductID", as:"OrderItems" ,constrai
 //// connect,synch to database run WebServer ////
 
 sequelize
-.sync({ force: false })
+.sync({ force: true })
 .then(result => {
     // console.log(result);
   Categories.create({
@@ -196,9 +196,7 @@ sequelize
       Address: "Address",
       UserType: "user"
     }).then(user =>{
-      user.comparePasswords('1qwe').then(result=>{
-        console.log(result);
-      })
+      
     })
     app.listen(8001,'localhost', function () {
       console.log("server is running");
@@ -243,51 +241,51 @@ sequelize
 
 
 
-///////////////////   Create Trigger to update quantity     //////////////////////////
-sequelize.query(
-  "alter procedure UpdateQuantity " +
-  "(@s nvarchar(255) , @id int) " +
-  "AS "+
+// ///////////////////   Create Trigger to update quantity     //////////////////////////
+// sequelize.query(
+//   "alter procedure UpdateQuantity " +
+//   "(@s nvarchar(255) , @id int) " +
+//   "AS "+
     
   
-  "declare @Size nvarchar(255) "+
-  "set @Size = @s "+
+//   "declare @Size nvarchar(255) "+
+//   "set @Size = @s "+
   
-  "declare @productID int "+
-  "set @productID = @id " +
+//   "declare @productID int "+
+//   "set @productID = @id " +
   
-  "declare @SoldQuantity int "+
-  "set @SoldQuantity = (select Quantity from orderItems where ProductID = @productID ) "+
+//   "declare @SoldQuantity int "+
+//   "set @SoldQuantity = (select Quantity from orderItems where ProductID = @productID ) "+
   
-  "declare @QuantityInStock int "+
-  "set @QuantityInStock = (select QuantityOnStock from quantities where ProductID = @productID ) - @SoldQuantity "+
+//   "declare @QuantityInStock int "+
+//   "set @QuantityInStock = (select QuantityOnStock from quantities where ProductID = @productID ) - @SoldQuantity "+
   
-  "declare @Weight float "+
-  "set @Weight = (select  weight from orderItems where ProductID = @productID) "+
+//   "declare @Weight float "+
+//   "set @Weight = (select  weight from orderItems where ProductID = @productID) "+
   
-  "declare @ProductQuantityID int "+
-  "set @ProductQuantityID = (select ProductQuantityID from quantities where ProductID = @productID ) "+
+//   "declare @ProductQuantityID int "+
+//   "set @ProductQuantityID = (select ProductQuantityID from quantities where ProductID = @productID ) "+
   
-  "update quantities "+
-   "set size=@size, QuantityOnStock = @QuantityInStock, SoldQuantity = @SoldQuantity, weight = @weight where ProductQuantityID = @ProductQuantityID and ProductID = @productID "
+//   "update quantities "+
+//    "set size=@size, QuantityOnStock = @QuantityInStock, SoldQuantity = @SoldQuantity, weight = @weight where ProductQuantityID = @ProductQuantityID and ProductID = @productID "
   
   
-  )  .then(result =>{
-        console.log("Procedure created " + result)
-    }); 
+//   )  .then(result =>{
+//         console.log("Procedure created " + result)
+//     }); 
 
-// sequelize.query('delete from orderItems');
-// sequelize.query('delete from Quantities');
+// // sequelize.query('delete from orderItems');
+// // sequelize.query('delete from Quantities');
 
-sequelize.query("insert into Quantities(Size, QuantityOnStock, SoldQuantity, Weight, ProductID) "+  "values('S', 200, 0, 2.0, 1)")
-sequelize.query( "Insert into orderItems(ProductName, Quantity, OrderPrice, Weight, ProductID) "+
-"values('Stuff', 199, 15.00, 2.0, 1)")
+// sequelize.query("insert into Quantities(Size, QuantityOnStock, SoldQuantity, Weight, ProductID) "+  "values('S', 200, 0, 2.0, 1)")
+// sequelize.query( "Insert into orderItems(ProductName, Quantity, OrderPrice, Weight, ProductID) "+
+// "values('Stuff', 199, 15.00, 2.0, 1)")
 
-sequelize.query("Exec UpdateQuantity @s = 'S', @id = 1 ")
+// sequelize.query("Exec UpdateQuantity @s = 'S', @id = 1 ")
 
-  sequelize.query  ('Select * from Quantities', { type: Sequelize.QueryTypes.SELECT }).then(function(rows) {
-    console.log(rows);
-})
+//   sequelize.query  ('Select * from Quantities', { type: Sequelize.QueryTypes.SELECT }).then(function(rows) {
+//     console.log(rows);
+// })
 
 
 

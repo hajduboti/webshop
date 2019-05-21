@@ -21,8 +21,8 @@ router.get('/', (req, res, next) => {
 ////     FIND BY PRODUCT NAME
 ///===============================
 
-router.post('/products/find', (req, res, next) => {
-  const productName = req.body.ProductName;
+router.get('/products/find/:ProductName', (req, res, next) => {
+  const productName = req.params.ProductName;
   let pageIndex = 1;
   const itemsPerPage = 20;
   if (req.query.page) pageIndex = parseInt(req.query.page);
@@ -219,7 +219,13 @@ router.get('/user/cart/', (req, res, next) => {
 });
 
 router.get('/user/orders/', (req, res, next) => {
-  res.render('cart');
+  Order.findAll({
+    include: [
+      'OrderItems'
+    ],
+  }).then(result =>{
+    res.json(result)
+  })
 });
 
 router.get('/admin/orders', (req, res, next) => {
