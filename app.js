@@ -131,13 +131,36 @@ app.use((error, req, res, next)=>{
 
 
 
-/// Relations ///
+// /// Relations ///
+// Product.hasMany( Reviews, { foreignKey:"ProductID", as:"Reviews"});
+// Reviews.belongsTo( Product, { foreignKey:"ProductID",as:"Reviews", constrains: true, onDelete: 'CASCADE' });
+
+// Product.hasMany(Images, { foreignKey:"ProductID", as:"Images" ,constrains: true, onDelete: 'CASCADE'});
+// Images.belongsTo( Product, { foreignKey:"ProductID", as:"Images" ,constrains: true, onDelete: 'CASCADE'});
+
+
+// Quantities.belongsTo(Product, { foreignKey:"ProductID" ,  as:"Quantities",constrains: true, onDelete: 'CASCADE'});
+// Product.hasMany(Quantities, {foreignKey:"ProductID",  as:"Quantities",constrains: true, onDelete: 'CASCADE'});
+
+// Product.belongsTo(SubCategories, {foreignKey:"SubCategoryID", as:"SubCategory",constrains: true, onDelete: 'CASCADE'});
+// SubCategories.hasMany(Product, {foreignKey:"SubCategoryID", as:"SubCategory" ,constrains: true, onDelete: 'CASCADE'});
+
+// Categories.hasMany(SubCategories, {foreignKey:"CategoryID",as:"SubCategories", constrains: true, onDelete: 'CASCADE'});
+// SubCategories.belongsTo(Categories, {foreignKey:"CategoryID", as:"SubCategories",constrains: true, onDelete: 'CASCADE'});
+
+
+// User.hasMany(Orders, {foreignKey:"UserID"});
+// Orders.belongsTo(User, { foreignKey:"UserID",constrains: true, onDelete: 'CASCADE'});
+
+// Orders.hasMany(OrderItems, {foreignKey:"OrderID", as:"OrderItems"});
+// OrderItems.belongsTo(Orders, { foreignKey:"OrderID", as:"OrderItems" ,constrains: true, onDelete: 'CASCADE'});
+
+
 Product.hasMany( Reviews, { foreignKey:"ProductID", as:"Reviews"});
 Reviews.belongsTo( Product, { foreignKey:"ProductID",as:"Reviews", constrains: true, onDelete: 'CASCADE' });
 
 Product.hasMany(Images, { foreignKey:"ProductID", as:"Images" ,constrains: true, onDelete: 'CASCADE'});
 Images.belongsTo( Product, { foreignKey:"ProductID", as:"Images" ,constrains: true, onDelete: 'CASCADE'});
-
 
 Quantities.belongsTo(Product, { foreignKey:"ProductID" ,  as:"Quantities",constrains: true, onDelete: 'CASCADE'});
 Product.hasMany(Quantities, {foreignKey:"ProductID",  as:"Quantities",constrains: true, onDelete: 'CASCADE'});
@@ -148,16 +171,12 @@ SubCategories.hasMany(Product, {foreignKey:"SubCategoryID", as:"SubCategory" ,co
 Categories.hasMany(SubCategories, {foreignKey:"CategoryID",as:"SubCategories", constrains: true, onDelete: 'CASCADE'});
 SubCategories.belongsTo(Categories, {foreignKey:"CategoryID", as:"SubCategories",constrains: true, onDelete: 'CASCADE'});
 
-
-User.hasMany(Orders, {foreignKey:"UserID"});
-
 Orders.hasMany(OrderItems, {foreignKey:"OrderID", as:"OrderItems"});
-OrderItems.belongsTo(Orders, { foreignKey:"ProductID", as:"OrderItems" ,constrains: true, onDelete: 'CASCADE'});
-
+OrderItems.belongsTo(Orders, { foreignKey:"OrderID", as:"OrderItems" ,constrains: true, onDelete: 'CASCADE'});
 //// connect,synch to database run WebServer ////
 
 sequelize
-.sync()
+.sync({ force: false })
 .then(() => {
     app.listen(8001,'localhost', function () {
       console.log("server is running");

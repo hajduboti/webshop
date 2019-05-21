@@ -247,9 +247,7 @@ router.get('/user/cart/', (req, res, next) => {
 
 router.get('/user/orders/', (req, res, next) => {
   Order.findAll({
-    include: [
-      'OrderItems'
-    ],
+   include:['OrderItems']
   }).then(result =>{
     res.json(result)
   })
@@ -334,7 +332,7 @@ router.get('/checkout', (req, res, next) => {
         ProductID: 1,
         ProductName: 'Shoes',
         Quantity: 2,
-        Price: 200,
+        OrderPrice: 200,
         Weight: 200
   }]
 
@@ -350,17 +348,18 @@ router.get('/checkout', (req, res, next) => {
       OrderItems: cart  
     }, {include: ['OrderItems']}).then(result => {
       console.log(result);
+      res.send('gotis');
       // Transaction has been committed
       // result is whatever the result of the promise chain returned to the transaction callback
     }).catch(err => {
       console.log(err);
-      return res.send(err);
+      res.send(err);
 
       // Transaction has been rolled back
       // err is whatever rejected the promise chain returned to the transaction callback
     });
   });
-  res.send('gotis');
+  
 
 });
 
