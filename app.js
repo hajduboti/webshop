@@ -12,7 +12,7 @@ const passport = require("passport");
 const LocalStrategy = require('passport-local').Strategy;
 var RedisStore = require('connect-redis')(session);
 const redisClient = require('./redis');
-
+const db = require('./dbFunctions')
 redisClient.on('connect', function() {
   console.log('Redis client connected');
 });
@@ -202,6 +202,7 @@ sequelize
       console.log("server is running");
     })
   })
+<<<<<<< HEAD
   ///////////////   Stored Procedure to recalculate a products score  ////////////////////  
 
   // sequelize.query("CREATE PROCEDURE RecalculateScore " +
@@ -286,6 +287,11 @@ sequelize
 //   sequelize.query  ('Select * from Quantities', { type: Sequelize.QueryTypes.SELECT }).then(function(rows) {
 //     console.log(rows);
 // })
+=======
+
+db.UpdateQuantity('S', 1)
+
+>>>>>>> 213e2be2ef4c6712e59d164d7b3d3d5763e2ef9c
 
 
 
