@@ -63,7 +63,7 @@ app.use(require('cookie-parser')());
 app.use(session({ 
   secret: 'passport-tutorial', 
   cookie: { maxAge: 1000 * 60 * 60 * 24 * 30 },
-  store: new RedisStore({ client: redisClient, ttl :  260}),
+  store: new RedisStore({ client: redisClient, ttl :  1000 * 60 * 60 * 24 * 30}),
   resave: false, 
   saveUninitialized: false
 }));
@@ -163,8 +163,8 @@ sequelize
       console.log("server is running");
     })
   })
-db.initUpdateQuantity()
-db.UpdateQuantity('s', 1)
+// db.initUpdateQuantity()
+// db.UpdateQuantity('s', 1)
 
 
 

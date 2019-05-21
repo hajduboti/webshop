@@ -77,15 +77,17 @@
                     <h4 class="box-title m-t-40">Product description</h4>
                     <p><%= product[0].Description %></p>
                     <h2 class="m-t-40">$<%= product[0].Price %></h2>
-                    <div class="d-flex">
+                    <select id="product-size" class="form-control" style="max-width: 200px">
+                        <% product[0].Quantities.forEach(function(element) { %>
+                        <option value="<%= element.Size %>"><%= element.Size %> in stock: <%= element.QuantityOnStock %></option>
+                        <% }) %>
+                      </select>
+                    <div class="d-flex mt-3">
                         <button class="btn btn-dark btn-rounded m-r-5" id="add-to-cart" data-toggle="tooltip" title=""
                         data-original-title="Add to cart"><i class="ti-shopping-cart"></i> </button>
-  
-                      <form action="/products/addtocart/<%= product[0].ProductID %>" method="POST">
-                        <button class="btn btn-primary btn-rounded"> Buy Now </button>
-                      </form>
+                        <button class="btn btn-primary btn-rounded" id="buy-now-btn"> Buy Now </button>
                     </div>
-                      
+                    
                     
                   </div>
                   <div class="col-lg-12 col-md-12 col-sm-12">
@@ -185,10 +187,22 @@
  
   <script>
   $('#add-to-cart').click(function(){
-    $.post( "/products/addtocart/<%= product[0].ProductID %>", function( data ) {
+    var size = $('#product-size').val()
+    var query = '?size=' + size
+    $.post( "/products/addtocart/<%= product[0].ProductID %>" + query, function( data ) {
       toastr.success('Success !', 'Product added to cart');
     });
   })
+
+  $('#buy-now-btn').click(function(){
+    var size = $('#product-size').val()
+    var query = '?size=' + size
+    $.post( "/products/addtocart/<%= product[0].ProductID %>" + query, function( data ) {
+      window.location.replace("/user/cart/");
+    });
+  })
+
+  
   </script>
 </body>
 

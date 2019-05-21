@@ -31,7 +31,7 @@ SubCategories.belongsTo(Categories, {foreignKey:"CategoryID", as:"SubCategories"
 
 
 sequelize
-.sync({ force: false })
+.sync({ force: true })
 .then(result => {
   console.log("Seeding the Database")
   Categories.create({
@@ -55,6 +55,11 @@ sequelize
         SubCategoryID : 1,
         Quantities: [{
           Size: "L",
+          QuantityOnStock: 20,
+          Weight: 1
+        },
+        {
+          Size: "M",
           QuantityOnStock: 20,
           Weight: 1
         }]

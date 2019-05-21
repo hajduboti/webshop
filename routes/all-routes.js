@@ -16,6 +16,7 @@ const Order = require('../models/order');
 const OrderItems = require('../models/orderitems');
 const SubCategories = require('../models/subcategories');
 const Quantities = require('../models/quantities');
+const Reviews = require('../models/reviews');
 
 router.get('/', (req, res, next) => {
   res.redirect('/products');
@@ -172,6 +173,7 @@ router.get('/products/:category/:subCategory', (req, res, next) => {
 ///===============================
 
 router.post('/products/addtocart/:id', (req, res, next) => {
+  const size = req.query.size
   const id = req.params.id
   Product.findOne({
     where: { ProductID: id },
@@ -179,11 +181,14 @@ router.post('/products/addtocart/:id', (req, res, next) => {
     include: [
       {
         model: Images,
-        as: 'Images'
+        as: 'Images',
+        attributes: ['Url']
       },
       {
         model: Quantities,
-        as: 'Quantities'
+        as: 'Quantities',
+        where: { Size: size },
+        attributes: ['Size', 'Weight']
       }
     ],
     raw: true
@@ -201,7 +206,7 @@ router.post('/products/addtocart/:id', (req, res, next) => {
       cartCookie.push(product)
     }
     res.cookie('cart', cartCookie)
-    res.redirect('/user/cart/');
+    res.sendStatus(200);
   })
 })
 
@@ -213,13 +218,24 @@ router.get('/product/:id', (req, res, next) => {
   const id = req.params.id;
   Product.findAll({
     include: [
-      'Images',
-      'Reviews'
+      {
+        model: Reviews,
+        as: 'Reviews'
+      },
+      {
+        model: Images,
+        as: 'Images'
+      },
+      {
+        model: Quantities,
+        as: 'Quantities'
+      }
     ],
     where: {
       ProductID: id
     }
   }).then(result => {
+    // res.json(result)
     res.render('product-detail', { "product": result });
   });
 });
