@@ -22,7 +22,7 @@ const Quantities = sequelize.define('quantities', {
     defaultValue : 0
   },
   Weight: {
-    type: DataTypes.STRING,
+    type: DataTypes.FLOAT,
     allowNull: false
   }
 }, {
