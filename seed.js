@@ -46,7 +46,7 @@ sequelize
         Brand: "Addidas",
         Description: "Elastic close-fitting garments worn over the legs",  
         Price: 50,
-        Images :[{ Url:"https://imagescdn.simons.ca/images/4907/17783/41/A1_2.jpg" }],
+        Images :[{ Url:"https://imagescdn.simons.ca/images/4907/17783/41/A1_2.jpg" },{ Url:"https://imagescdn.simons.ca/images/4907/17783/41/A1_1.jpg" }],
         Reviews : [{
           CustomerName : "Donis",
           Score : 5,
