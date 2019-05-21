@@ -156,7 +156,7 @@ OrderItems.belongsTo(Orders, { foreignKey:"ProductID", as:"OrderItems" ,constrai
 //// connect,synch to database run WebServer ////
 
 sequelize
-.sync({ force: true })
+.sync()
 .then(() => {
     app.listen(8001,'localhost', function () {
       console.log("server is running");
