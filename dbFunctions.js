@@ -48,31 +48,23 @@ console.log("Created ReviewUpdate Trigger")
 ///////////////////   Create Procedure to update quantity metrics     //////////////////////////
 initUpdateQuantity: function(){
     sequelize.query(
-        "alter procedure UpdateQuantity " +
-        "(@id int, @orderID int) " +
-        "AS "+
-
-
-        "declare @productID int "+
-        "set @productID = @id " +
-
-        "declare @order int "+
-        "set @order = @orderID " +
-        
-        "declare @SoldQuantity int "+
-        "set @SoldQuantity = (select SUM(Quantity) from orderItems where ProductID = @productID)"+
-      
-        "declare @QuantityInStock int "+
-        "set @QuantityInStock = (select QuantityOnStock from quantities where ProductID = @productID ) - (@SoldQuantity where orderItemID = @orderID) "+
-        
-        
-        "declare @ProductQuantityID int "+
-        "set @ProductQuantityID = (select ProductQuantityID from quantities where ProductID = @productID ) "+
-        
-        "update quantities "+
-        "set QuantityOnStock = @QuantityInStock, SoldQuantity = @SoldQuantity where ProductQuantityID = @ProductQuantityID and ProductID = @productID "
-        
-        
+      `
+        alter procedure UpdateQuantity
+        (@id int, @orderID int)
+        AS
+        declare @productID int
+        set @productID = @id
+        declare @order int
+        set @order = @orderID 
+        declare @SoldQuantity int
+        set @SoldQuantity = (select SUM(Quantity) from orderItems where ProductID = @productID)
+        declare @QuantityInStock int
+        set @QuantityInStock = (select QuantityOnStock from quantities where ProductID = @productID ) - (@SoldQuantity where orderItemID = @orderID)
+        declare @ProductQuantityID int
+        set @ProductQuantityID = (select ProductQuantityID from quantities where ProductID = @productID )
+        update quantities 
+        set QuantityOnStock = @QuantityInStock, SoldQuantity = @SoldQuantity where ProductQuantityID = @ProductQuantityID and ProductID = @productID
+      `
     )  .then(result =>{
           console.log("Procedure created " + result)
       }); 
@@ -80,7 +72,7 @@ initUpdateQuantity: function(){
 
 
 UpdateQuantity: function(productID, orderID){
-    sequelize.query( "Exec UpdateQuantity @id="+productID+"" +", @orderID="+orderID+"" )
+    sequelize.query( "Exec UpdateQuantity @id="+productID+"" +", @orderID="+orderID+";" )
 
     sequelize.query('Select * from Quantities', { type: Sequelize.QueryTypes.SELECT }).then(function(rows) {
     console.log(rows);

@@ -29,8 +29,12 @@ SubCategories.hasMany(Product, {foreignKey:"SubCategoryID", as:"SubCategory" ,co
 Categories.hasMany(SubCategories, {foreignKey:"CategoryID",as:"SubCategories", constrains: true, onDelete: 'CASCADE'});
 SubCategories.belongsTo(Categories, {foreignKey:"CategoryID", as:"SubCategories",constrains: true, onDelete: 'CASCADE'});
 
-Orders.hasMany(OrderItems, {foreignKey:"OrderID", as:"OrderItems"});
 OrderItems.belongsTo(Orders, { foreignKey:"OrderID", as:"OrderItems" ,constrains: true, onDelete: 'CASCADE'});
+Orders.hasMany(OrderItems, {foreignKey:"OrderID", as:"OrderItems"});
+
+Orders.belongsTo(User,{foreignKey:"UserID", as:"User"});
+
+
 
 sequelize
 .sync({ force: true })
@@ -86,7 +90,7 @@ sequelize
   })
 
     // dbFunctions.initRecalculateScore()
-    // dbFunctions.initUpdateQuantity()  
+    dbFunctions.initUpdateQuantity()  
     // dbFunctions.initUpdateReviewTrigger() 
     
   })

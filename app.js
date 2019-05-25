@@ -7,13 +7,12 @@ const bodyParser = require("body-parser");
 const path = require('path');
 const allRoutes = require('./routes/all-routes');
 const sequelize = require('./mssql');
-var Sequelize = require("sequelize");
 const session = require('express-session');
 const passport = require("passport");
 const LocalStrategy = require('passport-local').Strategy;
-var RedisStore = require('connect-redis')(session);
+const RedisStore = require('connect-redis')(session);
 const redisClient = require('./redis');
-const db = require('./dbFunctions')
+
 redisClient.on('connect', function() {
   console.log('Redis client connected');
 });
@@ -174,6 +173,7 @@ SubCategories.belongsTo(Categories, {foreignKey:"CategoryID", as:"SubCategories"
 Orders.hasMany(OrderItems, {foreignKey:"OrderID", as:"OrderItems"});
 OrderItems.belongsTo(Orders, { foreignKey:"OrderID", as:"OrderItems" ,constrains: true, onDelete: 'CASCADE'});
 //// connect,synch to database run WebServer ////
+Orders.belongsTo(User,{foreignKey:"UserID", as:"User"});
 
 sequelize
 .sync({ force: false })

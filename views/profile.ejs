@@ -176,6 +176,16 @@
   <!--This page plugins -->
   <script src="../../assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
   <script src="../../dist/js/pages/datatable/datatable-basic.init.js"></script>
+  <script>
+      $('#search-btn').click(function(){
+        var searchText = $("#seach-field").val();
+        if(searchText != ''){
+          var url = '/products/find/'+ searchText;
+          window.location.replace(url);
+        } 
+      })
+    
+    </script>
 </body>
 
 </html>

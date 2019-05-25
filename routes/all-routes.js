@@ -78,7 +78,7 @@ router.get('/products/', (req, res, next) => {
   Product.count().then(result => {
     totalItems = result;
     return Product.findAll({
-      attributes: ['ProductID', 'ProductName','Price'],
+      attributes: ['ProductID', 'ProductName','Price','Score'],
       include: [
         'Images'
       ],
@@ -188,7 +188,7 @@ router.post('/products/addtocart/:id', (req, res, next) => {
         model: Quantities,
         as: 'Quantities',
         where: { Size: size },
-        attributes: ['Size', 'Weight']
+        attributes: ['Size', 'Weight','ProductQuantityID']
       }
     ],
     raw: true
@@ -196,7 +196,7 @@ router.post('/products/addtocart/:id', (req, res, next) => {
     if (!req.cookies.cart) req.cookies.cart = []
     let cartCookie = req.cookies.cart
     let el = cartCookie.find(item => {
-      if (item.ProductID == product.ProductID) {
+      if (item.ProductID == product.ProductID && item['Quantities.Size'] == product['Quantities.Size']  ) {
         item.Quantity = item.Quantity + 1
         return item
       }
@@ -205,7 +205,13 @@ router.post('/products/addtocart/:id', (req, res, next) => {
       product.Quantity = 1;
       cartCookie.push(product)
     }
+    let totalPrice = 0;
+    cartCookie.map(element =>{
+      let price = element.Quantity * element.Price;
+      totalPrice += price
+    })
     res.cookie('cart', cartCookie)
+    res.cookie('totalPrice', totalPrice)
     res.sendStatus(200);
   })
 })
@@ -241,11 +247,15 @@ router.get('/product/:id', (req, res, next) => {
 });
 
 router.get('/user/cart/', (req, res, next) => {
-  res.send(JSON.stringify(req.cookies));
-  // res.render('cart');
+  const cart  = req.cookies.cart;
+  const totalPrice = req.cookies.totalPrice;
+  res.render('cart',{
+    cart : cart,
+    totalPrice: totalPrice
+  });
 });
 
-router.get('/user/orders/', (req, res, next) => {
+router.get('/user/orders/',middleware.isLoggedIn, (req, res, next) => {
   Order.findAll({
    include:['OrderItems']
   }).then(result =>{
@@ -253,9 +263,6 @@ router.get('/user/orders/', (req, res, next) => {
   })
 });
 
-router.get('/admin/orders', (req, res, next) => {
-  res.render('orders');
-});
 
 ///===============================
 ////     GET USER PROFILE
@@ -327,38 +334,47 @@ router.post("/login", middleware.Login);
 ////     SUBMIT CHECKOUT
 ///===============================
 
-router.get('/checkout', (req, res, next) => {
-  let cart = [{
-        ProductID: 1,
-        ProductName: 'Shoes',
-        Quantity: 2,
-        OrderPrice: 200,
-        Weight: 200
-  }]
+router.post('/user/cart/checkout', (req, res, next) => {
+  let totalPrice = req.cookies.totalPrice;
+  let orderitems = req.cookies.cart;
+  orderitems.map(element=>{
+    element.Size = element['Quantities.Size'];
+    delete element['Quantities.Size']
+    element.Weight = element['Quantities.Weight'];
+    // element.Weight = 'asd';
+    delete element['Quantities.Weight']
+    element.ProductQuantityID = element['Quantities.ProductQuantityID'];
+    delete element['Quantities.ProductQuantityID']
+    return element;
+  })
 
-  let MyTotalPrice = 400;
 
   sequelize.transaction(
     {isolationLevel: Sequelize.Transaction.ISOLATION_LEVELS.REPEATABLE_READ},
     (t) => {  
     // chain all your queries here. make sure you return them.
     return Order.create({
-      PaymentID: 1,
-      TotalPrice: MyTotalPrice,
-      OrderItems: cart  
-    }, {include: ['OrderItems']}).then(result => {
-      console.log(result);
-      res.send('gotis');
+      PaymentID: Math.floor(Math.random() * 10000),
+      TotalPrice: totalPrice,
+      OrderItems: orderitems,
+      UserID : req.user.UserID  
+    }, {
+      include: ['OrderItems'],
+      transaction: t
+    }).then(result => {
+      res.sendStatus(200);
+      // console.log(result);
+      // res.redirect('/user/orders');
       // Transaction has been committed
       // result is whatever the result of the promise chain returned to the transaction callback
     }).catch(err => {
-      console.log(err);
-      res.send(err);
+      res.status(500).send(err);
+      // res.send(err);
 
       // Transaction has been rolled back
       // err is whatever rejected the promise chain returned to the transaction callback
     });
-  });
+  }).catch(err => console.log(err));
   
 
 });
