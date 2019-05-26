@@ -257,7 +257,10 @@ router.get('/user/cart/', (req, res, next) => {
 
 router.get('/user/orders/',middleware.isLoggedIn, (req, res, next) => {
   Order.findAll({
-   include:['OrderItems']
+   include:['OrderItems'],
+   where :{
+     UserID : req.user.UserID
+   }
   }).then(result =>{
     res.json(result)
   })
@@ -334,7 +337,7 @@ router.post("/login", middleware.Login);
 ////     SUBMIT CHECKOUT
 ///===============================
 
-router.post('/user/cart/checkout', (req, res, next) => {
+router.post('/user/cart/checkout', middleware.isLoggedIn, (req, res, next) => {
   let totalPrice = req.cookies.totalPrice;
   let orderitems = req.cookies.cart;
   orderitems.map(element=>{
@@ -362,21 +365,15 @@ router.post('/user/cart/checkout', (req, res, next) => {
       include: ['OrderItems'],
       transaction: t
     }).then(result => {
-      res.sendStatus(200);
-      // console.log(result);
-      // res.redirect('/user/orders');
       // Transaction has been committed
-      // result is whatever the result of the promise chain returned to the transaction callback
+      res.clearCookie("cart");
+      res.clearCookie("totalPrice");
+      res.redirect('/user/orders');
     }).catch(err => {
-      res.status(500).send(err);
-      // res.send(err);
-
       // Transaction has been rolled back
-      // err is whatever rejected the promise chain returned to the transaction callback
+      res.status(500).send(err);
     });
   }).catch(err => console.log(err));
-  
-
 });
 
 module.exports = router;

@@ -110,7 +110,9 @@
                                         <a href="/" class="btn btn-dark btn-outline"><i class="fas fa-arrow-left"></i> Continue shopping</a>
                                         <% if(cart) { %>
                                         <div class="ml-auto">
-                                            <button class="btn btn-danger" id="check-out-btn1"><i class="fa fa fa-shopping-cart"></i> Checkout</button>
+                                            <form action="/user/cart/checkout" method="POST">
+                                              <button class="btn btn-danger"><i class="fa fa fa-shopping-cart"></i> Checkout</button>
+                                            </form>                                         
                                         </div>
                                         <% } %>
                                     </div>
@@ -128,8 +130,12 @@
                                 <small>Total Price</small>
                                 <h2>$<%= totalPrice %></h2>
                                 <hr>
-                                <button class="btn btn-success" id="check-out-btn2">Checkout</button>
-                                <button class="btn btn-secondary btn-outline" id="cancel-btn">Cancel</button>
+                                <div class="d-flex">
+                                  <form action="/user/cart/checkout" method="POST">
+                                    <button class="btn btn-success" id="check-out-btn2">Checkout</button>
+                                  </form>
+                                  <button class="btn btn-secondary btn-outline ml-3" id="cancel-btn">Cancel</button>
+                                </div>                              
                             </div>
                         </div>
                         <% } %>
@@ -200,34 +206,34 @@
         deleteCookie('totalPrice');
         window.location.replace("/user/cart/");
       })
-      $('#check-out-btn2').click(function(){
-        $.post( "/user/cart/checkout").done(
-          function(response){
-            deleteCookie('cart');
-            deleteCookie('totalPrice');
-            window.location.replace("/user/orders/");
-          })
-          .fail(
-            function(jqXHR, textStatus, errorThrown) {
-              console.log(jqXHR.responseJSON);
-              alert(jqXHR.responseJSON.original.message);
-            }
-          );
-      })
-      $('#check-out-btn1').click(function(){
-        $.post( "/user/cart/checkout").done(
-          function(response){
-            deleteCookie('cart');
-            deleteCookie('totalPrice');
-            window.location.replace("/user/orders/");
-          })
-          .fail(
-            function(jqXHR, textStatus, errorThrown) {
-              console.log(jqXHR.responseJSON);
-              alert(jqXHR.responseJSON.original.message);
-            }
-          );
-      })
+      // $('#check-out-btn2').click(function(){
+      //   $.post( "/user/cart/checkout").done(
+      //     function(response){
+      //       deleteCookie('cart');
+      //       deleteCookie('totalPrice');
+      //       window.location.replace("/user/orders/");
+      //     })
+      //     .fail(
+      //       function(jqXHR, textStatus, errorThrown) {
+      //         console.log(jqXHR.responseJSON);
+      //         alert(jqXHR.responseJSON.original.message);
+      //       }
+      //     );
+      // })
+      // $('#check-out-btn1').click(function(){
+      //   $.post( "/user/cart/checkout").done(
+      //     function(response){
+      //       deleteCookie('cart');
+      //       deleteCookie('totalPrice');
+      //       window.location.replace("/user/orders/");
+      //     })
+      //     .fail(
+      //       function(jqXHR, textStatus, errorThrown) {
+      //         console.log(jqXHR.responseJSON);
+      //         alert(jqXHR.responseJSON.original.message);
+      //       }
+      //     );
+      // })
     </script>
     <script>
         $('#search-btn').click(function(){
