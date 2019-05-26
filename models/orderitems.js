@@ -53,9 +53,12 @@ OrderItems.init({
       beforeValidate: (OrderItem, options) =>{
         return sequelize.query(`SELECT Price FROM products WHERE ProductID=:ProductID`,{
           replacements: { ProductID: OrderItem.ProductID },
-          type: sequelize.QueryTypes.SELECT
+          type: sequelize.QueryTypes.SELECT,
+          transaction: options.transaction
         }).then(result =>{
-          OrderItem.Price = result[0].Price;
+          if(OrderItem.Price != result[0].Price){
+            throw new Error('Price of the item does not match price in the database');            
+          }    
         })
       }
     },

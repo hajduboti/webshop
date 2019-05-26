@@ -303,7 +303,6 @@ router.post("/product/:id",middleware.isLoggedIn, (req, res, next) => {
   body.CustomerName = req.user.FirstName
   body.ProductID = productID;
   Reviews.create(body).then(result =>{
-    console.log(result);
     res.redirect('./'+productID);
   }).catch(err =>next(err))
 })
@@ -387,10 +386,11 @@ router.post('/user/cart/checkout', middleware.isLoggedIn, (req, res, next) => {
       res.clearCookie("totalPrice");
       res.redirect('/user/orders');
     }).catch(err => {
+      
       // Transaction has been rolled back
       throw err;
     });
-  }).catch(err => res.status(500).send(err));
+  }).catch(err => next(err));
 });
 
 module.exports = router;

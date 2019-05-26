@@ -533,9 +533,6 @@ sequelize
   
 })
 
-<<<<<<< Updated upstream
-
-=======
 // sequelize.query('DROP PROC IF EXISTS UpdateQuantity;');
 // sequelize.query(`
 //   CREATE PROC UpdateQuantity (@qnt INT, @ProductID INT, @Size VARCHAR(50))
@@ -550,4 +547,3 @@ sequelize
 //     RAISERROR ('No enough products in storage', 16, 1);
 //   END
 // `).then(() =>console.log("Procedure created")); 
->>>>>>> Stashed changes
