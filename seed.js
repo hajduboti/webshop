@@ -494,25 +494,7 @@ sequelize
     Address: "Address",
     UserType: "user"
   })
-<<<<<<< HEAD
-    sequelize.query('DROP PROC IF EXISTS UpdateQuantity;');
-    sequelize.query(`
-      CREATE PROC UpdateQuantity (@qnt INT, @ProductID INT, @Size VARCHAR(50))
-      AS
-      BEGIN
-      DECLARE @quantity INT = (SELECT QuantityOnStock FROM dbo.quantities WHERE ProductID = @ProductID AND Size = @Size )
-      IF @quantity > @qnt
-        UPDATE dbo.quantities
-        SET QuantityOnStock = QuantityOnStock - @qnt ,SoldQuantity = SoldQuantity + @qnt
-        WHERE ProductID = @ProductID AND Size = @Size
-      ELSE
-        RAISERROR ('No enough products in storage', 16, 1);
-      END
-    `).then(() =>console.log("Procedure created")); 
-  })
-=======
   
->>>>>>> 5b5526f6f64d2800e76b174d7a6c5e4b3036a9e6
 
 
 })
