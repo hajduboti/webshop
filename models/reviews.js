@@ -24,7 +24,8 @@ const Reviews = sequelize.define('reviews', {
     allowNull: false
   }
 },{
-  timestamps: true
+  timestamps: true,
+  hasTrigger: true
 });
 
 module.exports = Reviews;

@@ -86,7 +86,7 @@ router.get('/products/', (req, res, next) => {
       limit: itemsPerPage
     })
   }).then(result =>{
-    res.render('products',{
+    res.render('products', {
       products : result,
       currentPage: pageIndex,
       hasNextPage: itemsPerPage * pageIndex < totalItems,
@@ -136,7 +136,7 @@ router.get('/products/:category/:subCategory', (req, res, next) => {
       .then(result => {
         totalItems = result;
         return Product.findAll({
-          attributes: ['ProductID', 'ProductName', 'Price'],
+          attributes: ['ProductID', 'ProductName', 'Price', 'Score'],
           include: [
             {
               model: Images,
@@ -292,6 +292,21 @@ router.put("/user/profile", middleware.isLoggedIn,  (req, res, next) => {
   })
   .catch(err => next(err));
 });
+
+///===============================
+////     ADD REVIEW
+///===============================
+
+router.post("/product/:id", (req, res, next) => {
+  const productID = req.params.id;
+  let body = req.body;
+  body.CustomerName = req.user.FirstName
+  body.ProductID = productID;
+  Reviews.create(body).then(result =>{
+    console.log(result);
+    res.redirect('./'+productID);
+  }).catch(err =>next(err))
+})
 
 ///===============================
 ////     SIGN UP

@@ -40,13 +40,13 @@ sequelize
 .sync({ force: true })
 .then(result => {
   console.log("Seeding the Database")
-
   Categories.create({
     CategoryName: "Pants",
     SubCategories:[{ SubCategoryName: "Jeans"}]
   },{
     include: ['SubCategories']
-  }).then(result=>{
+  })
+  .then(result=>{
     for(i=0; i<30; i++){
       Product.create({
         ProductName: "Jeans", 
@@ -54,11 +54,18 @@ sequelize
         Description: "Denim trousers.",  
         Price: 50,
         Images :[{ Url:"https://images-na.ssl-images-amazon.com/images/I/71vdopEovDL._UX342_.jpg" }],
-      // Reviews : [{
-      //   CustomerName : "Donis",
-      //   Score : 5,
-      //   ReviewText : "Amazing pants very good."
-      // }],
+        Reviews : [
+          {
+          CustomerName : "Donis",
+          Score : 5,
+          ReviewText : "Amazing pants very good."
+          },
+          {
+            CustomerName : "Tom",
+            Score : 3,
+            ReviewText : "Amazing pants very good."
+          }
+        ],
         SubCategoryID : 1,
         Quantities: [{
           Size: "L",
@@ -71,13 +78,14 @@ sequelize
           Weight: 1
         }]
       },{
-        include: ['Images','Quantities']
+        include: ['Images','Quantities','Reviews']
       })
       .then(product =>{
         // console.log(product);
       })
       }
-  }).then(result =>{
+  })
+  .then(result =>{
     Categories.create({
       CategoryName: "Shoes",
       SubCategories:[{ SubCategoryName: "Running"}]
@@ -508,19 +516,21 @@ sequelize
 })
 })
 })
+  sequelize.query('DROP PROC IF EXISTS UpdateQuantity;');
+  sequelize.query(`
+    CREATE PROC UpdateQuantity (@qnt INT, @ProductID INT, @Size VARCHAR(50))
+    AS
+    BEGIN
+    DECLARE @quantity INT = (SELECT QuantityOnStock FROM dbo.quantities WHERE ProductID = @ProductID AND Size = @Size )
+    IF @quantity > @qnt
+      UPDATE dbo.quantities
+      SET QuantityOnStock = QuantityOnStock - @qnt ,SoldQuantity = SoldQuantity + @qnt
+      WHERE ProductID = @ProductID AND Size = @Size
+    ELSE
+      RAISERROR ('No enough products in storage', 16, 1);
+    END
+  `).then(() =>console.log("Procedure created"));
+  
 })
 
-sequelize.query('DROP PROC IF EXISTS UpdateQuantity;');
-sequelize.query(`
-  CREATE PROC UpdateQuantity (@qnt INT, @ProductID INT, @Size VARCHAR(50))
-  AS
-  BEGIN
-  DECLARE @quantity INT = (SELECT QuantityOnStock FROM dbo.quantities WHERE ProductID = @ProductID AND Size = @Size )
-  IF @quantity > @qnt
-    UPDATE dbo.quantities
-    SET QuantityOnStock = QuantityOnStock - @qnt ,SoldQuantity = SoldQuantity + @qnt
-    WHERE ProductID = @ProductID AND Size = @Size
-  ELSE
-    RAISERROR ('No enough products in storage', 16, 1);
-  END
-`).then(() =>console.log("Procedure created")); 
+

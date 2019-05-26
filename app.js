@@ -179,6 +179,18 @@ Orders.belongsTo(User,{foreignKey:"UserID", as:"User"});
 sequelize
 .sync({ force: false })
 .then(() => {
+    sequelize.query('DROP TRIGGER IF EXISTS UpdateReviewTrigger;');
+    sequelize.query(`
+      CREATE TRIGGER UpdateReviewTrigger ON reviews
+      AFTER INSERT
+      AS
+      SET NOCOUNT ON;
+      DECLARE @productID INT = (SELECT ProductID FROM inserted)
+      DECLARE @Score FLOAT = (SELECT AVG(Score) FROM reviews WHERE ProductID = @productID)
+      UPDATE dbo.products
+          SET Score = @Score
+          WHERE ProductID = @ProductID
+    `).then(()=>console.log("Trigger Created"))
     app.listen(8001,'localhost', function () {
       console.log("server is running");
     }); 
