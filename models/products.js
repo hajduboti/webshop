@@ -36,7 +36,13 @@ const Products = sequelize.define('products', {
     }
   }
 }, {
-    timestamps: false
+    timestamps: false,
+    indexes:[
+      {
+      unique: false,
+      fields:['SubCategoryID']
+    }
+    ]
   });
 
 module.exports = Products;
