@@ -44,8 +44,9 @@ OrderItems.init({
         return sequelize.query(
           'Exec UpdateQuantity @qnt=:Quantity, @ProductID=:ProductID, @Size=:Size',
           { 
-            replacements: { Quantity: OrderItem.Quantity, ProductID: OrderItem.ProductID, Size: OrderItem.Size, },
-            transaction: options.transaction
+            transaction: options.transaction,
+            type: sequelize.QueryTypes.RAW,
+            replacements: { Quantity: OrderItem.Quantity, ProductID: OrderItem.ProductID, Size: OrderItem.Size, }
           }
         )
       },

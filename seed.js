@@ -88,7 +88,6 @@ sequelize
     Address: "Address",
     UserType: "user"
   })
-  
     sequelize.query('DROP PROC IF EXISTS UpdateQuantity;');
     sequelize.query(`
       CREATE PROC UpdateQuantity (@qnt INT, @ProductID INT, @Size VARCHAR(50))

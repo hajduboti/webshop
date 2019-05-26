@@ -366,14 +366,16 @@ router.post('/user/cart/checkout', middleware.isLoggedIn, (req, res, next) => {
       transaction: t
     }).then(result => {
       // Transaction has been committed
+      console.log("Transaction has been committed")
+      // t.commit()
       res.clearCookie("cart");
       res.clearCookie("totalPrice");
       res.redirect('/user/orders');
     }).catch(err => {
       // Transaction has been rolled back
-      res.status(500).send(err);
+      throw err;
     });
-  }).catch(err => console.log(err));
+  }).catch(err => res.status(500).send(err));
 });
 
 module.exports = router;
