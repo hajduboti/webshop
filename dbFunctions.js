@@ -63,8 +63,7 @@ initUpdateQuantity: function(){
         declare @ProductQuantityID int
         set @ProductQuantityID = (select ProductQuantityID from quantities where ProductID = @productID )
         update quantities 
-        set QuantityOnStock = @QuantityInStock, SoldQuantity = @SoldQuantity where ProductQuantityID = @ProductQuantityID and ProductID = @productID
-      `
+        set QuantityOnStock = @QuantityInStock, SoldQuantity = @SoldQuantity where ProductQuantityID = @ProductQuantityID and ProductID = @productID`
     )  .then(result =>{
           console.log("Procedure created " + result)
       }); 
