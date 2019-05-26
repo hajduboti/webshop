@@ -16,4 +16,6 @@ const SubCategories = sequelize.define('subcategories', {
     timestamps: false
   });
 
+
+
 module.exports = SubCategories;
