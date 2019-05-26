@@ -201,18 +201,30 @@
         window.location.replace("/user/cart/");
       })
       $('#check-out-btn2').click(function(){
-        $.post( "/user/cart/checkout", function( data ) {
-          window.location.replace("/user/orders/");
-        });
+        $.post( "/user/cart/checkout").done(
+          function(response){
+            deleteCookie('cart');
+            deleteCookie('totalPrice');
+            window.location.replace("/user/orders/");
+          })
+          .fail(
+            function(jqXHR, textStatus, errorThrown) {
+              console.log(jqXHR.responseJSON);
+              alert(jqXHR.responseJSON.original.message);
+            }
+          );
       })
       $('#check-out-btn1').click(function(){
         $.post( "/user/cart/checkout").done(
           function(response){
-            // window.location.replace("/user/orders/");
+            deleteCookie('cart');
+            deleteCookie('totalPrice');
+            window.location.replace("/user/orders/");
           })
           .fail(
             function(jqXHR, textStatus, errorThrown) {
-              console.log(JSON.parse(jqXHR.responseText) );
+              console.log(jqXHR.responseJSON);
+              alert(jqXHR.responseJSON.original.message);
             }
           );
       })
