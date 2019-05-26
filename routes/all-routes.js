@@ -242,7 +242,7 @@ router.get('/product/:id', (req, res, next) => {
     }
   }).then(result => {
     // res.json(result)
-    res.render('product-detail', { "product": result });
+    res.render('product-detail', { "product": result, logedin : req.isAuthenticated() });
   });
 });
 
@@ -297,7 +297,7 @@ router.put("/user/profile", middleware.isLoggedIn,  (req, res, next) => {
 ////     ADD REVIEW
 ///===============================
 
-router.post("/product/:id", (req, res, next) => {
+router.post("/product/:id",middleware.isLoggedIn, (req, res, next) => {
   const productID = req.params.id;
   let body = req.body;
   body.CustomerName = req.user.FirstName
